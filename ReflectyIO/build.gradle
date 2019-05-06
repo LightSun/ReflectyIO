@@ -1,0 +1,17 @@
+group 'com.heaven7.java.reflectyio.yaml'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile "com.heaven7.java.reflecty:Reflecty:1.0.2"
+}
