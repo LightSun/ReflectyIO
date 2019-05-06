@@ -8,10 +8,6 @@ import com.heaven7.java.reflectyio.ReflectyEvaluator;
 import com.heaven7.java.reflectyio.ReflectyReader;
 import com.heaven7.java.reflectyio.ReflectyWriter;
 import com.heaven7.java.reflectyio.StartEndMemberProxy;
-import com.heaven7.java.reflectyio.anno.ReflectyClass;
-import com.heaven7.java.reflectyio.anno.ReflectyField;
-import com.heaven7.java.reflectyio.anno.ReflectyInherit;
-import com.heaven7.java.reflectyio.anno.ReflectyMethod;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +42,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         }else {
             //last is use member
             List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
-            sink.beginObject();
+            sink.beginObject(mClazz);
             try {
                 for (MemberProxy proxy : proxies){
                     if(((StartEndMemberProxy)proxy).isVersionMatched(mApplyVersion)){
@@ -73,7 +69,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
 
         Object obj = mTAM.getReflectyContext().newInstance(mClazz);
         List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
-        source.beginObject();
+        source.beginObject(mClazz);
         try {
             while (source.hasNext()){
                 MemberProxy proxy = findMemberProxy(proxies, source.nextName());

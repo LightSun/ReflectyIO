@@ -12,7 +12,7 @@ public interface ReflectyReader {
 
     boolean hasNext();
 
-    void beginObject();
+    void beginObject(Class<?> clazz);//class can be self-object class and any map class
 
     void endObject();
 

@@ -2,13 +2,13 @@ package com.heaven7.java.reflectyio;
 
 public interface ReflectyWriter {
 
+    void name(String s);
+
     void nullValue();
 
     void value(Number obj);
 
     void value(Boolean obj);
-
-    void name(String s);
 
     void value(Character chz);
 
@@ -18,7 +18,7 @@ public interface ReflectyWriter {
 
     void endArray();
 
-    void beginObject();
+    void beginObject(Class<?> clazz);//class can be self-object class and any map class
 
     void endObject();
 }

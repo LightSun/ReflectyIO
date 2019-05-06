@@ -11,7 +11,7 @@ import com.heaven7.java.reflectyio.anno.ReflectyMethod;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-public final class ReflectyIoBuilder {
+public final class ReflectyIo {
 
     private static volatile ITypeAdapterManager<ReflectyWriter, ReflectyReader> sTAM;
 
@@ -25,19 +25,19 @@ public final class ReflectyIoBuilder {
 
     private TypeAdapter<ReflectyWriter, ReflectyReader> adapter;
 
-    public ReflectyIoBuilder evaluator(ReflectyEvaluator evaluator) {
+    public ReflectyIo evaluator(ReflectyEvaluator evaluator) {
         this.evaluator = evaluator;
         return this;
     }
-    public ReflectyIoBuilder context(ReflectyContext context) {
+    public ReflectyIo context(ReflectyContext context) {
         this.context = context;
         return this;
     }
-    public ReflectyIoBuilder reflecty(Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> reflecty) {
+    public ReflectyIo reflecty(Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> reflecty) {
         this.reflecty = reflecty;
         return this;
     }
-    public ReflectyIoBuilder delegate(ReflectyDelegate<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> delegate) {
+    public ReflectyIo delegate(ReflectyDelegate<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> delegate) {
         this.reflecty = new ReflectyBuilder<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit>()
                 .classAnnotation(ReflectyClass.class)
                 .fieldAnnotation(ReflectyField.class)
@@ -47,37 +47,37 @@ public final class ReflectyIoBuilder {
                 .build();
         return this;
     }
-    public ReflectyIoBuilder tam(ITypeAdapterManager<ReflectyWriter, ReflectyReader> tam) {
+    public ReflectyIo tam(ITypeAdapterManager<ReflectyWriter, ReflectyReader> tam) {
         this.tam = tam;
         return this;
     }
 
-    public ReflectyIoBuilder cacheTAM(){
+    public ReflectyIo cacheTAM(){
         buildTamInternal();
         sTAM = this.tam;
         return this;
     }
-    public ReflectyIoBuilder useCacheTAM(){
+    public ReflectyIo useCacheTAM(){
         this.tam = sTAM;
         return this;
     }
 
-    public ReflectyIoBuilder type(Type type){
+    public ReflectyIo type(Type type){
         this.type = type;
         return this;
     }
-    public ReflectyIoBuilder typeToken(TypeToken<?> tt){
+    public ReflectyIo typeToken(TypeToken<?> tt){
         this.type = tt.getType();
         return this;
     }
-    public ReflectyIoBuilder version(float version){
+    public ReflectyIo version(float version){
         this.version = version;
         if(version <= 0 ){
             throw new IllegalArgumentException();
         }
         return this;
     }
-    public ReflectyIoBuilder build(){
+    public ReflectyIo build(){
         buildTamInternal();
         if(type != null){
             adapter = TypeAdapter.ofType(type, tam, version);

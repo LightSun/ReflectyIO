@@ -37,7 +37,7 @@ public final class MapTypeAdapter extends AbstractTypeAdapter {
             TypeAdapter<ReflectyWriter, ReflectyReader> key = ((BasicTypeAdapter) mKeyAdapter).getNameTypeAdapter();
             Set<Map.Entry> set = map.entrySet();
             //if mKeyAdapter is not base type. it doesn't support nested object. (Gson limit)
-            sink.beginObject();
+            sink.beginObject(mMapClass);
             for (Map.Entry en : set){
                 key.write(sink, en.getKey());
                 mValueAdapter.write(sink, en.getValue());
@@ -61,7 +61,7 @@ public final class MapTypeAdapter extends AbstractTypeAdapter {
         Map map = mContext.createMap(mMapClass);
         if(mKeyAdapter instanceof BasicTypeAdapter){
             TypeAdapter<ReflectyWriter, ReflectyReader> keyTA = ((BasicTypeAdapter) mKeyAdapter).getNameTypeAdapter();
-            source.beginObject();
+            source.beginObject(mMapClass);
             while (source.hasNext()){
                 Object key = keyTA.read(source);
                 Object value = mValueAdapter.read(source);
