@@ -1,5 +1,9 @@
 package com.heaven7.java.reflectyio;
 
+import com.heaven7.java.reflecty.ReflectyContext;
+
+import java.io.IOException;
+
 public interface ReflectyWriter {
 
     void name(String s);
@@ -18,7 +22,9 @@ public interface ReflectyWriter {
 
     void endArray();
 
-    void beginObject(Class<?> clazz);//class can be self-object class and any map class
+    void beginObject(ReflectyContext context, Class<?> clazz);//class can be self-object class and any map class
 
     void endObject();
+
+    void flush() throws IOException;
 }

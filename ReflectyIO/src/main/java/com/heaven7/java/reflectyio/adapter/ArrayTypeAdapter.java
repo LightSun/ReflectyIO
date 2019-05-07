@@ -24,11 +24,13 @@ public final class ArrayTypeAdapter extends AbstractTypeAdapter {
 
     @Override
     public int write(ReflectyWriter sink, Object obj) throws IOException {
-        int length = Array.getLength(obj);
         sink.beginArray();
-        for(int i = 0 ; i < length ; i ++){
-            Object o = Array.get(obj, i);
-            mComponentAdapter.write(sink, o);
+        if(obj != null) {
+            int length = Array.getLength(obj);
+            for (int i = 0; i < length; i++) {
+                Object o = Array.get(obj, i);
+                mComponentAdapter.write(sink, o);
+            }
         }
         sink.endArray();
         return 0;

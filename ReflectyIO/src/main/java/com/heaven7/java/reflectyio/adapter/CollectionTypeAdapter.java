@@ -25,10 +25,12 @@ public final class CollectionTypeAdapter extends AbstractTypeAdapter {
 
     @Override
     public int write(ReflectyWriter sink, Object obj) throws IOException {
-        Collection coll = mContext.getCollection(obj);
         sink.beginArray();
-        for (Object element : coll){
-            mComponentAdapter.write(sink, element);
+        if(obj != null) {
+            Collection coll = mContext.getCollection(obj);
+            for (Object element : coll) {
+                mComponentAdapter.write(sink, element);
+            }
         }
         sink.endArray();
         return 0;

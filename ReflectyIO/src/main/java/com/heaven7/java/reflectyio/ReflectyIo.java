@@ -99,6 +99,7 @@ public final class ReflectyIo {
             adapter = tam.createObjectTypeAdapter(obj.getClass(), version);
         }
         adapter.write(writer, obj);
+        writer.flush();
     }
     @SuppressWarnings("unchecked")
     public <T> T read(ReflectyReader reader) throws IOException{

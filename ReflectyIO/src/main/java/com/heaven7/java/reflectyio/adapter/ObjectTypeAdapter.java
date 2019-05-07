@@ -41,17 +41,19 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
             ta.write(sink, obj);
         }else {
             //last is use member
-            List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
-            sink.beginObject(mClazz);
-            try {
-                for (MemberProxy proxy : proxies){
-                    if(((StartEndMemberProxy)proxy).isVersionMatched(mApplyVersion)){
-                        sink.name(proxy.getPropertyName());
-                        getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion).write(sink, proxy.getValue(obj));
+            sink.beginObject(mTAM.getReflectyContext(), mClazz);
+            if(obj != null) {
+                List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
+                try {
+                    for (MemberProxy proxy : proxies) {
+                        if (((StartEndMemberProxy) proxy).isVersionMatched(mApplyVersion)) {
+                            sink.name(proxy.getPropertyName());
+                            getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion).write(sink, proxy.getValue(obj));
+                        }
                     }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
-            }catch (Exception e){
-                throw new RuntimeException(e);
             }
             sink.endObject();
         }
@@ -69,7 +71,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
 
         Object obj = mTAM.getReflectyContext().newInstance(mClazz);
         List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
-        source.beginObject(mClazz);
+        source.beginObject(mTAM.getReflectyContext(),mClazz);
         try {
             while (source.hasNext()){
                 MemberProxy proxy = findMemberProxy(proxies, source.nextName());

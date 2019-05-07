@@ -1,7 +1,6 @@
 package com.heaven7.java.reflectyio.adapter;
 
 import com.heaven7.java.reflecty.iota.BasicTypeAdapter;
-import com.heaven7.java.reflecty.iota.TypeAdapter;
 import com.heaven7.java.reflectyio.ReflectyEvaluator;
 import com.heaven7.java.reflectyio.ReflectyReader;
 import com.heaven7.java.reflectyio.ReflectyWriter;
