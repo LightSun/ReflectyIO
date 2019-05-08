@@ -2,6 +2,7 @@ package com.heaven7.java.reflectyio.yaml;
 
 import com.heaven7.java.reflectyio.ReflectyIo;
 import com.heaven7.java.reflectyio.SimpleReflectyDelegate;
+import com.heaven7.java.reflectyio.yaml.entity.Info;
 import com.heaven7.java.reflectyio.yaml.entity.Person;
 import org.junit.Test;
 
@@ -27,11 +28,32 @@ public class YamlWriterTest {
         p.setMap(createMap());
         p.setMapList(createMapList());
         p.setListMap(createListMap());
+        p.setInfo(createInfo());
+        p.setInfoList(createInfoList());
+        p.setInfoMap(createInfoMap());
 
         new ReflectyIo().delegate(new SimpleReflectyDelegate())
                 .build().cacheTAM().write(yamlWriter, p);
         System.out.println(sw.toString());
         clean();
+    }
+
+    private Map<String, Info> createInfoMap() {
+        Map<String, Info> map = new HashMap<>();
+        map.put("info1", createInfo());
+        map.put("info2", createInfo());
+        return map;
+    }
+
+    private List<Info> createInfoList() {
+        return Arrays.asList(createInfo(), createInfo());
+    }
+
+    private Info createInfo() {
+        Info info = new Info();
+        info.setAddr("addr1");
+        info.setPhone("12345");
+        return info;
     }
 
     private List<Map<String, Integer>> createListMap() {

@@ -91,7 +91,7 @@ public class YamlWriter implements ReflectyWriter {
         setWriterInternal();
 
         //if last is array. and current is map
-        if(lastIsArray && currentIsMap){
+        if(lastIsArray){
             mImpl.append(mImpl.totalIndentSpace).append("- ").append(Platforms.getNewLine());
             mImpl.nextSpace();
         }else {

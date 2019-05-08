@@ -12,6 +12,31 @@ public class Person {
     private List<Map<String, Integer>> listMap;
     private Map<String, List<Integer>> mapList;
 
+    private List<Info> infoList;
+    private Map<String, Info> infoMap;
+    private Info info;
+
+    public List<Info> getInfoList() {
+        return infoList;
+    }
+    public void setInfoList(List<Info> infoList) {
+        this.infoList = infoList;
+    }
+
+    public Map<String, Info> getInfoMap() {
+        return infoMap;
+    }
+    public void setInfoMap(Map<String, Info> infoMap) {
+        this.infoMap = infoMap;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+    public void setInfo(Info info) {
+        this.info = info;
+    }
+
     public int getAge() {
         return age;
     }
