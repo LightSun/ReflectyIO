@@ -71,7 +71,7 @@ public class YamlWriter implements ReflectyWriter {
         mImpl.indentSpace("  - ", false);
         mImpl.append(Platforms.getNewLine());
 
-        System.out.println("beginArray >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
+       // System.out.println("beginArray >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class YamlWriter implements ReflectyWriter {
         setWriterInternal();
 
         mImpl.previousSpace();
-        System.out.println("endArray >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
+       // System.out.println("endArray >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
     }
 
     @Override
@@ -98,7 +98,7 @@ public class YamlWriter implements ReflectyWriter {
             mImpl.append(Platforms.getNewLine());
             mImpl.nextSpace();
         }
-        System.out.println("beginObject >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
+       // System.out.println("beginObject >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class YamlWriter implements ReflectyWriter {
         setWriterInternal();
 
         mImpl.previousSpace();
-        System.out.println("endObject >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
+       // System.out.println("endObject >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
     }
 
     private void setWriterInternal() {
