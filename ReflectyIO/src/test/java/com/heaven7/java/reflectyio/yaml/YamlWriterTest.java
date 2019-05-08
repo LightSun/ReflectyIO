@@ -6,6 +6,8 @@ import com.heaven7.java.reflectyio.yaml.entity.Info;
 import com.heaven7.java.reflectyio.yaml.entity.Person;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.*;
 
@@ -35,6 +37,14 @@ public class YamlWriterTest {
         new ReflectyIo().delegate(new SimpleReflectyDelegate())
                 .build().cacheTAM().write(yamlWriter, p);
         System.out.println(sw.toString());
+
+        BufferedReader reader = new BufferedReader(new StringReader(sw.toString()));
+        List<String> lines = new ArrayList<>();
+        String line ;
+        while ((line = reader.readLine()) != null){
+            lines.add(line);
+        }
+        new YamlReader().analyzeLines(lines);
         clean();
     }
 

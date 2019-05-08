@@ -3,9 +3,7 @@ package com.heaven7.java.reflectyio.yaml;
 import com.heaven7.java.reflecty.ReflectyContext;
 import com.heaven7.java.reflectyio.ReflectyReader;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class YamlReader implements ReflectyReader {
@@ -13,7 +11,7 @@ public class YamlReader implements ReflectyReader {
     private final GroupLine root = new GroupLine();
     private GroupLine current;
 
-    private void analyzeLines(List<String> lines) {
+    void analyzeLines(List<String> lines) {
         List<YamlLine> yls = new ArrayList<>();
         lines.removeIf(new Predicate<String>() {
             @Override
@@ -27,30 +25,36 @@ public class YamlReader implements ReflectyReader {
             yls.add(yl);
         }
         List<YamlLine> list = new ArrayList<>(yls);
-
-       // YamlLine popLine = findPushPopLine(yls);
-    }
-
-    private GroupLine[] findPushPopLine(List<YamlLine> yls, GroupLine parent) {
-        if(yls.isEmpty()){
-            return null;
-        }
-        YamlLine line = yls.get(0);
-        GroupLine[] arr = new GroupLine[2];
-        arr[0] = new GroupLine(line);
-        for (int i = 1, size = yls.size() ; i < size ; i ++){
-            YamlLine temp = yls.get(i);
-            if(temp.indentCount == line.indentCount){
-                arr[1] = new GroupLine(temp);
-                break;
+        /*
+        1. 利用栈的思想. 一个一个的将line 入栈。 每个Indent和上一个比。indentCount == brother。> child.
+         < 则将上一个同级的全部出栈。
+         *
+         */
+        GroupLine last = new GroupLine(list.get(0));
+        root.addChild(last);
+        Stack<GroupLine> stack = new Stack<>();
+        stack.push(last);
+        if(list.size() > 1){
+            for (YamlLine line : list.subList(1, list.size())){
+                GroupLine cur = new GroupLine(line);
+                if(line.indentCount == last.line.indentCount){
+                    last.parent.addChild(cur);
+                }else if(line.indentCount > last.line.indentCount){
+                    last.addChild(cur);
+                }else {
+                    //remove last-batch lines.
+                    GroupLine temp = stack.pop();
+                    while (line.indentCount < temp.line.indentCount){
+                         temp = stack.pop();
+                    }
+                    temp.parent.addChild(cur);
+                }
+                stack.push(cur);
+                last = cur;
             }
         }
-        if(parent != null){
-
-        }
-        return arr;
+        System.out.println(root);//wait debug
     }
-
     @Override
     public String nextString() {
         return current.line.value;

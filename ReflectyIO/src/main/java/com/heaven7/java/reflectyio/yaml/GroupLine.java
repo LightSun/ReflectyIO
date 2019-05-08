@@ -27,4 +27,16 @@ public class GroupLine {
         parent.childIndex += 1;
         return parent.childen.get(parent.childIndex);
     }
+
+    public void addChild(GroupLine gl) {
+        childen.add(gl);
+        gl.parent = this;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupLine{" +
+                "line=" + line +
+                '}';
+    }
 }
