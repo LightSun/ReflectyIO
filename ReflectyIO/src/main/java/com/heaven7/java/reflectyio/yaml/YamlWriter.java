@@ -68,8 +68,7 @@ public class YamlWriter implements ReflectyWriter {
         parentStack.push(TYPE_ARRAY);
         setWriterInternal();
 
-        //if last type is map. and this is first.
-        mImpl.indentSpace("  - ");
+        mImpl.indentSpace("  - ", false);
         mImpl.append(Platforms.getNewLine());
 
         System.out.println("beginArray >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
@@ -86,11 +85,19 @@ public class YamlWriter implements ReflectyWriter {
 
     @Override
     public void beginObject(ReflectyContext context, Class<?> mClazz) {
-        parentStack.push(TYPE_OBJECT);
+        boolean lastIsArray = !parentStack.isEmpty() && parentStack.peek() == TYPE_ARRAY;
+        boolean currentIsMap = context.isMap(mClazz);
+        parentStack.push(currentIsMap ? TYPE_MAP: TYPE_OBJECT);
         setWriterInternal();
 
-        mImpl.append(Platforms.getNewLine());
-        mImpl.nextSpace();
+        //if last is array. and current is map
+        if(lastIsArray && currentIsMap){
+            mImpl.append(mImpl.totalIndentSpace).append("- ").append(Platforms.getNewLine());
+            mImpl.nextSpace();
+        }else {
+            mImpl.append(Platforms.getNewLine());
+            mImpl.nextSpace();
+        }
         System.out.println("beginObject >>> indent_space=" + mImpl.totalIndentSpace + ", len = " + mImpl.totalIndentSpace.length());
     }
 
@@ -115,6 +122,7 @@ public class YamlWriter implements ReflectyWriter {
                 writer = arrayWriter;
                 break;
 
+            case TYPE_MAP:
             case TYPE_OBJECT:
                 if(objectWriter == null){
                     objectWriter = new ParentObjectWriter(mImpl);
@@ -141,10 +149,11 @@ public class YamlWriter implements ReflectyWriter {
         String totalIndentSpace ="";
         final Stack<StepNode> stepHistory = new Stack<>();
 
-        public String indentSpace(String holdStr){
+        public String indentSpace(String holdStr, boolean common){
             indentCount += holdStr.length();
-            stepHistory.push(new StepNode(holdStr));
-            totalIndentSpace += holdStr;
+            String commonHoldStr = common ? holdStr : getSpace(holdStr.length());
+            stepHistory.push(new StepNode(commonHoldStr, holdStr, common));
+            totalIndentSpace += commonHoldStr; //use common
             return totalIndentSpace;
         }
         public String indentSpace(int count){
@@ -160,6 +169,11 @@ public class YamlWriter implements ReflectyWriter {
         }
         @Override
         public String currentSpace() {
+            StepNode node = stepHistory.peek();
+            if(node != null && !node.sameHoldStr){
+                int length = totalIndentSpace.length();
+                return totalIndentSpace.substring(0, length - node.step) + node.currentHoldStr;
+            }
             return totalIndentSpace;
         }
         @Override
@@ -178,14 +192,19 @@ public class YamlWriter implements ReflectyWriter {
     private static class StepNode{
         final int step;
         final String holdStr;
+        final String currentHoldStr; //can only apply to similar node
+        final boolean sameHoldStr;
 
         public StepNode(int step) {
             this.step = step;
-            this.holdStr = getSpace(step);
+            currentHoldStr = holdStr = getSpace(step);
+            sameHoldStr = true;
         }
-        public StepNode(String holdStr) {
-            this.step = holdStr.length();
-            this.holdStr = holdStr;
+        public StepNode(String commonHoldStr, String curHoldStr, boolean common) {
+            this.step = commonHoldStr.length();
+            this.currentHoldStr = curHoldStr;
+            this.holdStr = commonHoldStr;
+            sameHoldStr = common;
         }
     }
 
