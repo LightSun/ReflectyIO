@@ -7,6 +7,7 @@ import com.heaven7.java.reflectyio.yaml.entity.Person;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.*;
@@ -37,15 +38,17 @@ public class YamlWriterTest {
         new ReflectyIo().delegate(new SimpleReflectyDelegate())
                 .build().cacheTAM().write(yamlWriter, p);
         System.out.println(sw.toString());
-
-        BufferedReader reader = new BufferedReader(new StringReader(sw.toString()));
-        List<String> lines = new ArrayList<>();
-        String line ;
-        while ((line = reader.readLine()) != null){
-            lines.add(line);
-        }
-        new YamlReader().analyzeLines(lines);
+        //test parse
+        testRead();
         clean();
+    }
+
+    private void testRead() throws IOException {
+        YamlReader reader = new YamlReader(new StringReader(sw.toString()));
+        Object p = new ReflectyIo().delegate(new SimpleReflectyDelegate())
+                .type(Person.class)
+                .build().read(reader);
+        System.out.println(p);
     }
 
     private Map<String, Info> createInfoMap() {

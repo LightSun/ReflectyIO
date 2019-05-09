@@ -3,6 +3,9 @@ package com.heaven7.java.reflectyio.yaml;
 import com.heaven7.java.reflecty.ReflectyContext;
 import com.heaven7.java.reflectyio.ReflectyReader;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -10,8 +13,20 @@ public class YamlReader implements ReflectyReader {
 
     private final GroupLine root = new GroupLine();
     private GroupLine current;
+    private GroupLine last;
 
-    void analyzeLines(List<String> lines) {
+    public YamlReader(Reader r) throws IOException{
+        BufferedReader reader = r instanceof BufferedReader ? (BufferedReader) r : new BufferedReader(r);
+        List<String> lines = new ArrayList<>();
+        String line ;
+        while ((line = reader.readLine()) != null){
+            lines.add(line);
+        }
+        analyzeLines(lines, root);
+        current = root;
+    }
+
+    static void analyzeLines(List<String> lines, GroupLine root) {
         List<YamlLine> yls = new ArrayList<>();
         lines.removeIf(new Predicate<String>() {
             @Override
@@ -53,7 +68,6 @@ public class YamlReader implements ReflectyReader {
                 last = cur;
             }
         }
-        System.out.println(root);//wait debug
     }
     @Override
     public String nextString() {
@@ -90,7 +104,6 @@ public class YamlReader implements ReflectyReader {
     }
     @Override
     public void skipValue() {
-
     }
 
 }

@@ -15,19 +15,20 @@ public class GroupLine {
     public GroupLine(YamlLine yl) {
         line = yl;
     }
-
     public boolean hasNext() {
         if (parent == null) {
-            return false;
+            return childen.size() > childIndex + 1;
         }
         return parent.childen.size() > parent.childIndex + 1;
     }
-
     public GroupLine next() {
-        parent.childIndex += 1;
-        return parent.childen.get(parent.childIndex);
+        if(parent != null){
+            parent.childIndex += 1;
+            return parent.childen.get(parent.childIndex);
+        }
+        childIndex += 1;
+        return childen.get(childIndex);
     }
-
     public void addChild(GroupLine gl) {
         childen.add(gl);
         gl.parent = this;
