@@ -97,6 +97,7 @@ public class YamlReader implements ReflectyReader {
     @Override
     public void beginObject(ReflectyContext context, Class<?> clazz) {
         current = current.next();
+        //nextChild / nextBrother()?
     }
     @Override
     public void endObject() {
