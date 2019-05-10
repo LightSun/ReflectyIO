@@ -2,7 +2,7 @@ package com.heaven7.java.reflectyio.yaml;
 
 import com.heaven7.java.base.util.Platforms;
 
-public class ParentObjectWriter extends BaseParentWriter implements ParentTypeWriter {
+/*public*/ class ParentObjectWriter extends BaseParentWriter implements ParentTypeWriter {
 
     public ParentObjectWriter(HostWriter hostWriter) {
         super(hostWriter);

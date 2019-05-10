@@ -1,6 +1,6 @@
 package com.heaven7.java.reflectyio.yaml;
 
-public interface HostWriter {
+/*public*/ interface HostWriter {
 
     String nextSpace();
 

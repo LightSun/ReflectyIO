@@ -1,18 +1,19 @@
 package com.heaven7.java.reflectyio.yaml;
 
+import com.heaven7.java.reflecty.TypeToken;
 import com.heaven7.java.reflectyio.ReflectyIo;
 import com.heaven7.java.reflectyio.SimpleReflectyDelegate;
 import com.heaven7.java.reflectyio.yaml.entity.Info;
 import com.heaven7.java.reflectyio.yaml.entity.Person;
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.*;
 
-public class YamlWriterTest {
+public class YamlTest {
 
     private final StringWriter sw = new StringWriter();
     private final YamlWriter yamlWriter = new YamlWriter(sw);
@@ -35,20 +36,39 @@ public class YamlWriterTest {
         p.setInfoList(createInfoList());
         p.setInfoMap(createInfoMap());
 
-        new ReflectyIo().delegate(new SimpleReflectyDelegate())
-                .build().cacheTAM().write(yamlWriter, p);
-        System.out.println(sw.toString());
-        //test parse
-        testRead();
+        testImpl(new TypeToken<Person>(){}, p);
         clean();
     }
 
-    private void testRead() throws IOException {
+    @Test
+    public void testMap()throws Exception{
+        Map<String, Info> map = createInfoMap();
+        TypeToken<Map<String, Info>> tt = new TypeToken<Map<String, Info>>() {
+        };
+        testImpl(tt, map);
+    }
+
+    @Test
+    public void testListMap() throws Exception{
+        List<Map<String, Integer>> list = createListMap();
+        TypeToken<List<Map<String, Integer>>> tt = new TypeToken<List<Map<String, Integer>>>() {
+        };
+        testImpl(tt, list);
+    }
+
+    private void testImpl(TypeToken<?> tt, Object raw) throws IOException {
+        new ReflectyIo().delegate(new SimpleReflectyDelegate())
+                .typeToken(tt)
+                .build().cacheTAM().write(yamlWriter, raw);
+        System.out.println(sw.toString());
+
         YamlReader reader = new YamlReader(new StringReader(sw.toString()));
-        Object p = new ReflectyIo().delegate(new SimpleReflectyDelegate())
-                .type(Person.class)
+        Object obj = new ReflectyIo().delegate(new SimpleReflectyDelegate())
+                .typeToken(tt)
                 .build().read(reader);
-        System.out.println(p);
+        clean();
+
+        Assert.assertEquals(obj, raw);
     }
 
     private Map<String, Info> createInfoMap() {
@@ -59,7 +79,7 @@ public class YamlWriterTest {
     }
 
     private List<Info> createInfoList() {
-        return Arrays.asList(createInfo(), createInfo());
+        return new ArrayList<>(Arrays.asList(createInfo(), createInfo()));
     }
 
     private Info createInfo() {
@@ -92,6 +112,6 @@ public class YamlWriterTest {
     }
 
     private List<String> createList() {
-        return Arrays.asList("h123", "h456", "h789");
+        return new ArrayList<>(Arrays.asList("h123", "h456", "h789"));
     }
 }

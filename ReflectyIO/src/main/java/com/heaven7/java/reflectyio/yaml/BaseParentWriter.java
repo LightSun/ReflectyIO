@@ -1,6 +1,6 @@
 package com.heaven7.java.reflectyio.yaml;
 
-public class BaseParentWriter  {
+/*public*/ class BaseParentWriter  {
 
     private HostWriter hostWriter;
 

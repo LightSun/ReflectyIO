@@ -3,7 +3,7 @@ package com.heaven7.java.reflectyio.yaml;
 
 import com.heaven7.java.base.util.Platforms;
 
-public class ParentArrayWriter extends BaseParentWriter implements ParentTypeWriter {
+/*public*/ class ParentArrayWriter extends BaseParentWriter implements ParentTypeWriter {
 
     public ParentArrayWriter(HostWriter hostWriter) {
         super(hostWriter);

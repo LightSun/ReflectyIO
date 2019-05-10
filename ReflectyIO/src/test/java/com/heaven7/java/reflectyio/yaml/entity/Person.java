@@ -2,6 +2,7 @@ package com.heaven7.java.reflectyio.yaml.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Person {
 
@@ -79,5 +80,26 @@ public class Person {
     }
     public void setMapList(Map<String, List<Integer>> mapList) {
         this.mapList = mapList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return age == person.age &&
+                Objects.equals(name, person.name) &&
+                Objects.equals(list, person.list) &&
+                Objects.equals(map, person.map) &&
+                Objects.equals(listMap, person.listMap) &&
+                Objects.equals(mapList, person.mapList) &&
+                Objects.equals(infoList, person.infoList) &&
+                Objects.equals(infoMap, person.infoMap) &&
+                Objects.equals(info, person.info);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(age, name, list, map, listMap, mapList, infoList, infoMap, info);
     }
 }

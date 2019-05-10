@@ -1,5 +1,7 @@
 package com.heaven7.java.reflectyio.yaml.entity;
 
+import java.util.Objects;
+
 public class Info {
 
     private String addr;
@@ -19,5 +21,20 @@ public class Info {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Info info = (Info) o;
+        return Objects.equals(addr, info.addr) &&
+                Objects.equals(phone, info.phone);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(addr, phone);
     }
 }

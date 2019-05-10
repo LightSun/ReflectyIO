@@ -1,9 +1,24 @@
-group 'com.heaven7.java.reflectyio.yaml'
-version '1.0-SNAPSHOT'
-
 apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
 
-sourceCompatibility = 1.8
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.4.0'
+    }
+}
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
 
 repositories {
     jcenter()
@@ -14,4 +29,13 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     compile "com.heaven7.java.reflecty:Reflecty:1.0.2"
+}
+
+publish {
+    userOrg = 'lightsun' //bintray user name
+    groupId = 'com.heaven7.java.reflectyio'
+    artifactId = 'ReflectyIo'
+    publishVersion = '1.0.0-beta'
+    desc = 'this is a super framework which is used for reflect, serialize, deserialize data.'
+    website = 'https://github.com/LightSun/Reflecty'
 }

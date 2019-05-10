@@ -1,5 +1,6 @@
 package com.heaven7.java.reflectyio.yaml;
 
+import com.heaven7.java.base.anno.VisibleForTest;
 import com.heaven7.java.reflecty.ReflectyContext;
 import com.heaven7.java.reflectyio.ReflectyReader;
 
@@ -12,8 +13,8 @@ import java.util.function.Predicate;
 public class YamlReader implements ReflectyReader {
 
     private final GroupLine root = new GroupLine();
+    private GroupLine parent;
     private GroupLine current;
-    private GroupLine last;
 
     public YamlReader(Reader r) throws IOException{
         BufferedReader reader = r instanceof BufferedReader ? (BufferedReader) r : new BufferedReader(r);
@@ -26,6 +27,7 @@ public class YamlReader implements ReflectyReader {
         current = root;
     }
 
+    @VisibleForTest
     static void analyzeLines(List<String> lines, GroupLine root) {
         List<YamlLine> yls = new ArrayList<>();
         lines.removeIf(new Predicate<String>() {
@@ -41,8 +43,10 @@ public class YamlReader implements ReflectyReader {
         }
         List<YamlLine> list = new ArrayList<>(yls);
         /*
-        1. 利用栈的思想. 一个一个的将line 入栈。 每个Indent和上一个比。indentCount == brother。> child.
-         < 则将上一个同级的全部出栈。
+        1. travel all lines, push line to stack. and compare the intent between current and last.
+        2. if indentCount ==  means is brother
+           else if indentCount > means is child.
+           or else reach the last' parent. pop all same indent of last.
          *
          */
         GroupLine last = new GroupLine(list.get(0));
@@ -71,7 +75,13 @@ public class YamlReader implements ReflectyReader {
     }
     @Override
     public String nextString() {
-        return current.line.value;
+        String str = current.line.value;
+        current = null;
+        return str;
+    }
+    @Override
+    public void skipValue() {
+        current = null;
     }
 
     @Override
@@ -80,31 +90,33 @@ public class YamlReader implements ReflectyReader {
     }
 
     @Override
+    public boolean hasNext() {
+        if(current == null){
+            current = parent.nextChild();
+        }
+        return current != null;
+    }
+
+    @Override
     public void beginArray() {
-        current = current.next();
+        parent = current;
+        current = null;
     }
 
     @Override
     public void endArray() {
-        current = current.parent;
+        parent = parent.parent;
+        current = null;
     }
-
-    @Override
-    public boolean hasNext() {
-        return current.hasNext();
-    }
-
     @Override
     public void beginObject(ReflectyContext context, Class<?> clazz) {
-        current = current.next();
-        //nextChild / nextBrother()?
+        parent = current;
+        current = null;
     }
     @Override
     public void endObject() {
-        current = current.parent;
-    }
-    @Override
-    public void skipValue() {
+        parent = parent.parent;
+        current = null;
     }
 
 }
