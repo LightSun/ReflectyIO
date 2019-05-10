@@ -122,7 +122,7 @@ public final class ReflectyIo {
                 context = new SimpleReflectyContext();
             }
             if(evaluator == null){
-                evaluator = new SimpleReflectyEvaluator();
+                evaluator = SimpleReflectyEvaluator.INSTANCE;
             }
             tam = new ReflectyTypeAdapterManager(context, evaluator, reflecty);
         }

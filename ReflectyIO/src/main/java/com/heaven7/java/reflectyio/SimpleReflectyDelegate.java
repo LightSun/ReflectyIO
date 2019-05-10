@@ -11,6 +11,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * the simple reflecty delegate
+ * @author  heaven7
+ */
 public class SimpleReflectyDelegate implements ReflectyDelegate<TypeAdapter<ReflectyWriter, ReflectyReader>,
         ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> {
 

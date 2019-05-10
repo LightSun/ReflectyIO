@@ -32,7 +32,7 @@ public final class ReflectyTypeAdapterManager extends AbstractTypeAdapterManager
                 .build());
     }
     public ReflectyTypeAdapterManager(Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> mReflecty) {
-        this(new SimpleReflectyContext(), new SimpleReflectyEvaluator(), mReflecty);
+        this(new SimpleReflectyContext(), SimpleReflectyEvaluator.INSTANCE, mReflecty);
     }
     public ReflectyTypeAdapterManager(@NonNull ReflectyContext context, @NonNull ReflectyEvaluator evaluator,
                                       @NonNull Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> mReflecty) {

@@ -1,5 +1,9 @@
 package com.heaven7.java.reflectyio;
 
+/**
+ * the reflecty evaluator
+ * @author heaven7
+ */
 public interface ReflectyEvaluator {
 
     int evaluateObject(Object obj);

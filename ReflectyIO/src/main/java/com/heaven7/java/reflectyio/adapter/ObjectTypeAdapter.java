@@ -7,7 +7,7 @@ import com.heaven7.java.reflecty.iota.TypeAdapter;
 import com.heaven7.java.reflectyio.ReflectyEvaluator;
 import com.heaven7.java.reflectyio.ReflectyReader;
 import com.heaven7.java.reflectyio.ReflectyWriter;
-import com.heaven7.java.reflectyio.StartEndMemberProxy;
+import com.heaven7.java.reflectyio.VersionMemberProxy;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +46,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
                 List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
                 try {
                     for (MemberProxy proxy : proxies) {
-                        if (((StartEndMemberProxy) proxy).isVersionMatched(mApplyVersion)) {
+                        if (((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)) {
                             sink.name(proxy.getPropertyName());
                             getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion).write(sink, proxy.getValue(obj));
                         }
@@ -75,7 +75,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         try {
             while (source.hasNext()){
                 MemberProxy proxy = findMemberProxy(proxies, source.nextName());
-                if(proxy != null && ((StartEndMemberProxy) proxy).isVersionMatched(mApplyVersion)){
+                if(proxy != null && ((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
                     Object value = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion).read(source);
                     proxy.setValue(obj, value);
                 }else {

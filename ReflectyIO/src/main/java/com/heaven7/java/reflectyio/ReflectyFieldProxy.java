@@ -6,7 +6,7 @@ import com.heaven7.java.reflectyio.anno.Until;
 
 import java.lang.reflect.Field;
 
-public class ReflectyFieldProxy extends FieldProxy implements StartEndMemberProxy{
+public class ReflectyFieldProxy extends FieldProxy implements VersionMemberProxy {
 
     private final float since;
     private final float until;

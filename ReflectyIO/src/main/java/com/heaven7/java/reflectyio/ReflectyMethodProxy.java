@@ -6,7 +6,7 @@ import com.heaven7.java.reflectyio.anno.Until;
 
 import java.lang.reflect.Method;
 
-public class ReflectyMethodProxy extends MethodProxy implements StartEndMemberProxy{
+public class ReflectyMethodProxy extends MethodProxy implements VersionMemberProxy {
 
     private final float since;
     private final float until;
