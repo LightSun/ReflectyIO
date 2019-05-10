@@ -36,6 +36,6 @@ publish {
     groupId = 'com.heaven7.java.reflectyio'
     artifactId = 'ReflectyIo'
     publishVersion = '1.0.0-beta'
-    desc = 'this is a super framework which is used for reflect, serialize, deserialize data.'
+    desc = 'this is a common framework which user reflect lib, to serialize, deserialize data. you can wrap yaml, json, xml.'
     website = 'https://github.com/LightSun/Reflecty'
 }
