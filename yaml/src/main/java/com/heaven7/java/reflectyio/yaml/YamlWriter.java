@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019
+ * heaven7(donshine723@gmail.com)
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.heaven7.java.reflectyio.yaml;
 
 import com.heaven7.java.base.util.Platforms;
@@ -8,6 +24,47 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Stack;
 
+/**
+ * the writer used to write 'yaml' data.
+ * <p>here is a person object with the person class.</p>
+ * <pre><code>
+ *     public class Person {
+ *
+     *     private int age;
+     *     private String name;
+     *     private List<String> list;
+     *     private Map<String, Integer> map;
+     *     private List<Map<String, Integer>> listMap;
+     *     private Map<String, List<Integer>> mapList;
+     *
+     *     private List<Info> infoList;
+     *     private Map<String, Info> infoMap;
+     *     private Info info;
+ *     }
+ *     public class Info {
+     *
+     *     private String addr;
+     *     private String phone;
+ *     }
+ *     // set person's property
+ *      Person p = new Person();
+ *         p.setAge(28);
+ *         p.setName("heaven7");
+ *         p.setList(createList());
+ *         p.setMap(createMap());
+ *         p.setMapList(createMapList());
+ *         p.setListMap(createListMap());
+ *         p.setInfo(createInfo());
+ *         p.setInfoList(createInfoList());
+ *         p.setInfoMap(createInfoMap());
+ *
+ *    // then write data
+ *     new ReflectyIo().delegate(new SimpleReflectyDelegate())
+ *                 .typeToken(tt)
+ *                 .build().cacheTAM().write(new YamlWriter(...), p);
+ * </code></pre>
+ * @author heaven7
+ */
 public class YamlWriter implements ReflectyWriter {
 
     public static final byte TYPE_ARRAY  = 1;
@@ -143,7 +200,7 @@ public class YamlWriter implements ReflectyWriter {
         return sb_space.toString();
     }
 
-    private class HostWriterImpl implements HostWriter{
+    private class HostWriterImpl implements HostWriter {
 
         int indentCount;
         String totalIndentSpace ="";

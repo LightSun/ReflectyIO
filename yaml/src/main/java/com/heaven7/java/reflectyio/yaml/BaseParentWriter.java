@@ -14,24 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.heaven7.java.reflectyio;
+package com.heaven7.java.reflectyio.yaml;
 
-/**
- * the reflecty evaluator
- * @author heaven7
- */
-public interface ReflectyEvaluator {
+/*public*/ class BaseParentWriter  {
 
-    int evaluateObject(Object obj);
+    private HostWriter hostWriter;
 
-    int evaluateNullSize();
+    public BaseParentWriter(HostWriter hostWriter) {
+        this.hostWriter = hostWriter;
+    }
 
-    int evaluateNumber(Number obj);
+    public HostWriter getHostWriter() {
+        return hostWriter;
+    }
 
-    int evaluateBoolean(Boolean obj);
-
-    int evaluateString(String s);
-
-    int evaluateCharacter(Character obj);
-
+    public BaseParentWriter append(String str){
+        hostWriter.append(str);
+        return this;
+    }
 }
