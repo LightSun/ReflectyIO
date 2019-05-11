@@ -20,10 +20,8 @@ import com.heaven7.java.reflecty.MemberProxy;
 import com.heaven7.java.reflecty.Reflecty;
 import com.heaven7.java.reflecty.iota.ITypeAdapterManager;
 import com.heaven7.java.reflecty.iota.TypeAdapter;
-import com.heaven7.java.reflectyio.ReflectyEvaluator;
-import com.heaven7.java.reflectyio.ReflectyReader;
-import com.heaven7.java.reflectyio.ReflectyWriter;
-import com.heaven7.java.reflectyio.VersionMemberProxy;
+import com.heaven7.java.reflectyio.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -43,6 +41,10 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
     private final ITypeAdapterManager<ReflectyWriter, ReflectyReader> mTAM;
     private final Class<?> mClazz;
     private final float mApplyVersion;
+    /** the field indicate the the output and input should have no name. that means only have value. there is no mapping name.
+     * @since 1.0.1
+     * */
+    private boolean mNoMappingName;
 
     public ObjectTypeAdapter(ReflectyEvaluator evaluator,
              Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ?, ?, ?, ?> reflecty,
@@ -55,6 +57,23 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         this.mClazz = mClazz;
     }
 
+    /**
+     * indicate the read source will have no mapping name or not
+     * @return false if has no mapping name. true otherwise.
+     * @since 1.0.1
+     */
+    public boolean isNoMappingName() {
+        return mNoMappingName;
+    }
+
+    /**
+     * set that the read source will have no mapping name or not. default is false means has mapping name.
+     * @param mNoMappingName  false means has mapping name
+     * @since 1.0.1
+     */
+    public void setNoMappingName(boolean mNoMappingName) {
+        this.mNoMappingName = mNoMappingName;
+    }
     @Override
     public int write(ReflectyWriter sink, Object obj) throws IOException {
         //dynamic first moved to TypeNode
@@ -70,8 +89,13 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
                 try {
                     for (MemberProxy proxy : proxies) {
                         if (((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)) {
-                            sink.name(proxy.getPropertyName());
-                            getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion).write(sink, proxy.getValue(obj));
+                            TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                            if(proxy instanceof Commissioner){
+                                ((Commissioner) proxy).write(ta2, sink, proxy.getValue(obj));
+                            }else {
+                                sink.name(proxy.getPropertyName());
+                                ta2.write(sink, proxy.getValue(obj));
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -96,13 +120,32 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
         source.beginObject(mTAM.getReflectyContext(),mClazz);
         try {
-            while (source.hasNext()){
-                MemberProxy proxy = findMemberProxy(proxies, source.nextName());
-                if(proxy != null && ((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
-                    Object value = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion).read(source);
-                    proxy.setValue(obj, value);
-                }else {
-                    source.skipValue();
+            if(!mNoMappingName){
+                while (source.hasNext()){
+                    MemberProxy proxy = findMemberProxy(proxies, source.nextName());
+                    if(proxy != null && ((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
+                        TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                        if(proxy instanceof Commissioner){
+                            ((Commissioner) proxy).read(ta2, source);
+                        }else {
+                            proxy.setValue(obj, ta2.read(source));
+                        }
+                    }else {
+                        source.skipValue();
+                    }
+                }
+            }else {
+                for (MemberProxy proxy : proxies){
+                    if(((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
+                        TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                        if(proxy instanceof Commissioner){
+                            ((Commissioner) proxy).read(ta2, source);
+                        }else {
+                            proxy.setValue(obj, ta2.read(source));
+                        }
+                    }else {
+                        source.skipValue();
+                    }
                 }
             }
         }catch (Exception e){

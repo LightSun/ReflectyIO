@@ -35,7 +35,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.reflectyio'
     artifactId = 'ReflectyIo'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.1'
     desc = 'this is a common framework which user reflect lib, to serialize, deserialize data. you can wrap yaml, json, xml or etc.'
     website = 'https://github.com/LightSun/ReflectyIO'
 }
