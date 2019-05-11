@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.heaven7.java.reflectyio.yaml;
+package com.heaven7.java.yaml;
 
 
 import com.heaven7.java.base.util.Platforms;

@@ -1,4 +1,4 @@
-package com.heaven7.java.reflectyio.yaml;
+package com.heaven7.java.yaml;
 
 import org.junit.Assert;
 import org.junit.Test;

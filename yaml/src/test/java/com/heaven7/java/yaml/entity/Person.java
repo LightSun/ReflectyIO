@@ -1,4 +1,4 @@
-package com.heaven7.java.reflectyio.yaml.entity;
+package com.heaven7.java.yaml.entity;
 
 import java.util.List;
 import java.util.Map;

@@ -1,10 +1,10 @@
-package com.heaven7.java.reflectyio.yaml;
+package com.heaven7.java.yaml;
 
 import com.heaven7.java.reflecty.TypeToken;
 import com.heaven7.java.reflectyio.ReflectyIo;
 import com.heaven7.java.reflectyio.SimpleReflectyDelegate;
-import com.heaven7.java.reflectyio.yaml.entity.Info;
-import com.heaven7.java.reflectyio.yaml.entity.Person;
+import com.heaven7.java.yaml.entity.Info;
+import com.heaven7.java.yaml.entity.Person;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -14,18 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.heaven7.java.reflectyio.yaml;
+package com.heaven7.java.yaml;
 
-/*public*/ interface ParentTypeWriter {
-    void name(String s);
+/*public*/ class BaseParentWriter  {
 
-    void nullValue();
+    private HostWriter hostWriter;
 
-    void value(Number obj);
+    public BaseParentWriter(HostWriter hostWriter) {
+        this.hostWriter = hostWriter;
+    }
 
-    void value(Boolean obj);
+    public HostWriter getHostWriter() {
+        return hostWriter;
+    }
 
-    void value(Character chz);
-
-    void value(String str);
+    public BaseParentWriter append(String str){
+        hostWriter.append(str);
+        return this;
+    }
 }
