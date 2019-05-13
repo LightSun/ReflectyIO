@@ -18,6 +18,16 @@ public class XmlReader implements ReflectyReader {
     }
 
     @Override
+    public void begin() {
+
+    }
+
+    @Override
+    public void end() {
+
+    }
+
+    @Override
     public String nextString() throws IOException {
         return current.getValue();
     }

@@ -1,19 +1,22 @@
 package com.heaven7.java.xml.entity;
 
 import com.heaven7.java.xml.XmlBody;
+import com.heaven7.java.xml.XmlRoot;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@XmlRoot("Google")
 public class Person {
 
     private int age;
     private String name;
     private List<String> list;
     private Map<String, Integer> map;
-    private List<Map<String, Integer>> listMap;
+    private List<Map<String, Integer>> listMap; //用注解，映射child element name.
     private Map<String, List<Integer>> mapList;
+    //private Map<String, List<Info>> mapList;
 
     private List<Info> infoList;
     private Map<String, Info> infoMap;

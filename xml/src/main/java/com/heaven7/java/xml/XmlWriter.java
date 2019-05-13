@@ -8,6 +8,7 @@ import java.io.Writer;
 
 public final class XmlWriter implements ReflectyWriter {
 
+    private static final String DEFAULT_NAME = "root";
     private static final byte TYPE_OBJECT = 1;
     private static final byte TYPE_ARRAY  = 2;
     //private static final byte TYPE_MAP    = 3;
@@ -22,11 +23,23 @@ public final class XmlWriter implements ReflectyWriter {
 
     public XmlWriter(Writer writer) {
         this.impl = new XmlWriterImpl(writer);
-        try {
-            impl.element("root");
-        } catch (IOException e) {
-            e.printStackTrace();
+    }
+
+    @Override
+    public void begin(Object obj) throws IOException {
+        final String name;
+        XmlRoot root = obj.getClass().getAnnotation(XmlRoot.class);
+        if(root != null){
+            name = root.value();
+        }else {
+            name = DEFAULT_NAME;
         }
+        impl.element(name);
+    }
+
+    @Override
+    public void end(Object obj) throws IOException{
+
     }
 
     @Override
@@ -73,11 +86,14 @@ public final class XmlWriter implements ReflectyWriter {
 
     @Override
     public void beginObject(ReflectyContext context, Class<?> clazz) throws IOException {
+        //last is list. and this is map ? add child element ?
         if(parentType == TYPE_OBJECT){
             if(name != null){
                 impl.element(name);
                 name = null;
             }
+        }else {
+
         }
         parentType = TYPE_OBJECT;
         setParentWriter();
