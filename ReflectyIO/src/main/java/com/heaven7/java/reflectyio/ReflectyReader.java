@@ -27,6 +27,20 @@ import java.io.IOException;
 public interface ReflectyReader {
 
     /**
+     * called this writer begin the write
+     * @throws IOException if an I/O error occurs
+     * @since 1.0.4
+     */
+    void begin() throws IOException;
+
+    /**
+     * called this writer end the write
+     * @throws IOException if an I/O error occurs
+     * @since 1.0.4
+     */
+    void end() throws IOException;
+
+    /**
      * called on request next value as string
      * @return the value.
      * @throws IOException if an I/O error occurs.

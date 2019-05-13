@@ -27,6 +27,22 @@ import java.io.IOException;
 public interface ReflectyWriter {
 
     /**
+     * called this writer begin the write
+     * @param obj begin to write target object
+     * @throws IOException if an I/O error occurs
+     * @since 1.0.4
+     */
+    void begin(Object obj) throws IOException;
+
+    /**
+     * called this writer end the write
+     * @param obj end to write target object
+     * @throws IOException if an I/O error occurs
+     * @since 1.0.4
+     */
+    void end(Object obj) throws IOException;
+
+    /**
      * write the string as name
      * @param s the name
      * @throws IOException if an I/O error occurs.

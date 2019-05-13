@@ -118,7 +118,9 @@ public final class ReflectyIo {
             }
             adapter = tam.createObjectTypeAdapter(obj.getClass(), version);
         }
+        writer.begin(obj);
         adapter.write(writer, obj);
+        writer.end(obj);
         writer.flush();
     }
     @SuppressWarnings("unchecked")
@@ -129,7 +131,10 @@ public final class ReflectyIo {
         if(type == null){
             throw new IllegalStateException("for read. type can't be null");
         }
-        return (T) adapter.read(reader);
+        reader.begin();
+        T result = (T) adapter.read(reader);
+        reader.end();
+        return result;
     }
 
 
