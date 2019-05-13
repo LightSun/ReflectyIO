@@ -29,55 +29,65 @@ public interface ReflectyWriter {
     /**
      * write the string as name
      * @param s the name
+     * @throws IOException if an I/O error occurs.
      */
-    void name(String s);
+    void name(String s) throws IOException;
 
     /**
      * write a null value
+     * @throws IOException if an I/O error occurs.
      */
-    void nullValue();
+    void nullValue() throws IOException;
 
     /**
      * write a number as value
      * @param obj the number
+     * @throws IOException if an I/O error occurs.
      */
-    void value(Number obj);
+    void value(Number obj) throws IOException;
     /**
      * write a boolean value
      * @param obj the boolean value
+     * @throws IOException if an I/O error occurs.
      */
-    void value(Boolean obj);
+    void value(Boolean obj) throws IOException;
     /**
      * write a Character value
      * @param obj the Character value
+     * @throws IOException if an I/O error occurs.
      */
-    void value(Character obj);
+    void value(Character obj) throws IOException;
     /**
      * write a string value
      * @param obj the string value
+     * @throws IOException if an I/O error occurs.
      */
-    void value(String obj);
+    void value(String obj) throws IOException;
 
     /**
      * mark the writer begin to write an array. can called from array/list
+     * @throws IOException if an I/O error occurs.
      */
-    void beginArray();
+    void beginArray() throws IOException;
     /**
      * mark the writer write the last array end. can called from array/list
+     * @throws IOException if an I/O error occurs.
      */
-    void endArray();
+    void endArray() throws IOException;
 
     /**
      * mark to write an object. can be called from object and map.
      * @param context  the context
      * @param clazz the class
+     * @throws IOException if an I/O error occurs.
      */
-    void beginObject(ReflectyContext context, Class<?> clazz);//class can be self-object class and any map class
+    void beginObject(ReflectyContext context, Class<?> clazz) throws IOException;//class can be self-object class and any map class
 
     /**
      * mark to write object end.
+     * @throws IOException if an I/O error occurs.
      */
-    void endObject();
+    void endObject() throws IOException;
 
     /**
      * flush the content to the writer

@@ -18,6 +18,8 @@ package com.heaven7.java.reflectyio;
 
 import com.heaven7.java.reflecty.ReflectyContext;
 
+import java.io.IOException;
+
 /**
  * the reflecty reader
  * @author heaven7
@@ -27,44 +29,52 @@ public interface ReflectyReader {
     /**
      * called on request next value as string
      * @return the value.
+     * @throws IOException if an I/O error occurs.
      */
-    String nextString();
+    String nextString() throws IOException;
 
     /**
      * called on request next name
      * @return the name.
+     * @throws IOException if an I/O error occurs.
      */
-    String nextName();
+    String nextName() throws IOException;
 
     /**
      * begin read an array
+     * @throws IOException if an I/O error occurs.
      */
-    void beginArray();
+    void beginArray() throws IOException;
     /**
      * end read an array
+     * @throws IOException if an I/O error occurs.
      */
-    void endArray();
+    void endArray() throws IOException;
 
     /**
      * called when have next element for current object/array/map
      * @return true if has next
+     * @throws IOException if an I/O error occurs.
      */
-    boolean hasNext();
+    boolean hasNext() throws IOException;
 
     /**
      * begin read an object
      * @param context the context
      * @param clazz the class . map be object or map
+     * @throws IOException if an I/O error occurs.
      */
-    void beginObject(ReflectyContext context, Class<?> clazz);//class can be self-object class and any map class
+    void beginObject(ReflectyContext context, Class<?> clazz) throws IOException;//class can be self-object class and any map class
 
     /**
      * end read an object
+     * @throws IOException if an I/O error occurs.
      */
-    void endObject();
+    void endObject() throws IOException;
 
     /**
      * skip the value
+     * @throws IOException if an I/O error occurs.
      */
-    void skipValue();
+    void skipValue() throws IOException;
 }
