@@ -126,7 +126,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
                     if(proxy != null && ((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
                         TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
                         if(proxy instanceof Commissioner){
-                            ((Commissioner) proxy).read(ta2, source);
+                            ((Commissioner) proxy).read(ta2, obj, source);
                         }else {
                             proxy.setValue(obj, ta2.read(source));
                         }
@@ -139,7 +139,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
                     if(((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
                         TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
                         if(proxy instanceof Commissioner){
-                            ((Commissioner) proxy).read(ta2, source);
+                            ((Commissioner) proxy).read(ta2, obj, source);
                         }else {
                             proxy.setValue(obj, ta2.read(source));
                         }

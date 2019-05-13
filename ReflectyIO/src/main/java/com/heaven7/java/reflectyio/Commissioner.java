@@ -24,8 +24,10 @@ public interface Commissioner{
     /**
      * read the data self. often you should use {@linkplain MemberProxy#setValue(Object, Object)} to set the read value.
      * @param adapter the type adapter of current
+     * @param obj the receiver which to set the value.
      * @param source the source to read
      * @throws IOException if I/O error occurs
+     * @since 1.0.2
      */
-    void read(TypeAdapter<ReflectyWriter, ReflectyReader> adapter, ReflectyReader source) throws IOException;
+    void read(TypeAdapter<ReflectyWriter, ReflectyReader> adapter, Object obj, ReflectyReader source) throws IOException;
 }
