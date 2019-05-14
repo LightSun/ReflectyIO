@@ -1,13 +1,13 @@
 package com.heaven7.java.xml.entity;
 
 import com.heaven7.java.xml.XmlBody;
-import com.heaven7.java.xml.XmlRoot;
+import com.heaven7.java.xml.XmlElement;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@XmlRoot("Google")
+@XmlElement("Google")
 public class Person {
 
     private int age;

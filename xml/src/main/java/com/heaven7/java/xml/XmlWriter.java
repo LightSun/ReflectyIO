@@ -5,8 +5,9 @@ import com.heaven7.java.reflectyio.ReflectyWriter;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Stack;
 
-public final class XmlWriter implements ReflectyWriter {
+public final class XmlWriter implements ReflectyWriter, IXmlWriter {
 
     private static final String DEFAULT_NAME = "root";
     private static final byte TYPE_OBJECT = 1;
@@ -16,9 +17,9 @@ public final class XmlWriter implements ReflectyWriter {
     private final ArrayTypeWriter mArrayWriter = new ArrayTypeWriter();
     private final ObjectTypeWriter mObjWriter  = new ObjectTypeWriter();
 
+    private final Stack<Byte> parentTypeStack = new Stack<>();
     private final XmlWriterImpl impl;
     private ParentTypeWriter pWriter;
-    private byte parentType;
     private String name;
 
     public XmlWriter(Writer writer) {
@@ -28,7 +29,7 @@ public final class XmlWriter implements ReflectyWriter {
     @Override
     public void begin(Object obj) throws IOException {
         final String name;
-        XmlRoot root = obj.getClass().getAnnotation(XmlRoot.class);
+        XmlElement root = obj.getClass().getAnnotation(XmlElement.class);
         if(root != null){
             name = root.value();
         }else {
@@ -74,7 +75,7 @@ public final class XmlWriter implements ReflectyWriter {
 
     @Override
     public void beginArray() throws IOException {
-        parentType = TYPE_ARRAY;
+        parentTypeStack.push(TYPE_ARRAY);
         setParentWriter();
     }
 
@@ -82,20 +83,21 @@ public final class XmlWriter implements ReflectyWriter {
     public void endArray() throws IOException {
         pWriter.endArray(impl, name);
         name = null;
+        parentTypeStack.pop();
     }
 
     @Override
     public void beginObject(ReflectyContext context, Class<?> clazz) throws IOException {
         //last is list. and this is map ? add child element ?
-        if(parentType == TYPE_OBJECT){
-            if(name != null){
-                impl.element(name);
-                name = null;
+        if(!parentTypeStack.isEmpty()){
+            if(parentTypeStack.peek() == TYPE_OBJECT){
+                if(name != null){
+                    impl.element(name);
+                    name = null;
+                }
             }
-        }else {
-
         }
-        parentType = TYPE_OBJECT;
+        parentTypeStack.push(TYPE_OBJECT);
         setParentWriter();
     }
 
@@ -103,6 +105,7 @@ public final class XmlWriter implements ReflectyWriter {
     public void endObject() throws IOException {
         pWriter.endObject(impl, name);
         name = null;
+        parentTypeStack.pop();
     }
 
     @Override
@@ -114,8 +117,23 @@ public final class XmlWriter implements ReflectyWriter {
         impl.text(value);
     }
 
+    @Override
+    public void element(String name) throws IOException{
+        impl.element(name);
+        parentTypeStack.push(TYPE_OBJECT);
+        setParentWriter();
+    }
+
+    @Override
+    public void pop() throws IOException {
+        impl.pop();
+    }
+
     private void setParentWriter() {
-        switch (parentType){
+        if(parentTypeStack.isEmpty()){
+            return;
+        }
+        switch (parentTypeStack.peek()){
             case TYPE_ARRAY:
                 pWriter = mArrayWriter;
                 break;
