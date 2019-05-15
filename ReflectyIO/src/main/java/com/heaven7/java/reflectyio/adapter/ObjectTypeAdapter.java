@@ -18,6 +18,7 @@ package com.heaven7.java.reflectyio.adapter;
 
 import com.heaven7.java.reflecty.MemberProxy;
 import com.heaven7.java.reflecty.Reflecty;
+import com.heaven7.java.reflecty.ReflectyContext;
 import com.heaven7.java.reflecty.iota.ITypeAdapterManager;
 import com.heaven7.java.reflecty.iota.TypeAdapter;
 import com.heaven7.java.reflectyio.*;
@@ -83,18 +84,39 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
             ta.write(sink, obj);
         }else {
             //last is use member
-            sink.beginObject(mTAM.getReflectyContext(), mClazz);
+            ReflectyContext context = mTAM.getReflectyContext();
+            ReflectyWriter2 iwm = sink instanceof ReflectyWriter2 ? (ReflectyWriter2)sink : null;
+            if(iwm != null){
+                iwm.beginWriteObject(context, mClazz, obj);
+            }
+            sink.beginObject(context, mClazz);
             if(obj != null) {
                 List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
                 try {
-                    for (MemberProxy proxy : proxies) {
-                        if (((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)) {
-                            TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
-                            if(proxy instanceof Commissioner){
-                                ((Commissioner) proxy).write(ta2, sink, proxy.getValue(obj));
-                            }else {
-                                sink.name(proxy.getPropertyName());
-                                ta2.write(sink, proxy.getValue(obj));
+                    if(iwm != null){
+                        for (MemberProxy proxy : proxies) {
+                            if (((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)) {
+                                iwm.beginWriteMemberProxy(context, proxy);
+                                TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                                if(proxy instanceof Commissioner){
+                                    ((Commissioner) proxy).write(ta2, sink, proxy.getValue(obj));
+                                }else {
+                                    sink.name(proxy.getPropertyName());
+                                    ta2.write(sink, proxy.getValue(obj));
+                                }
+                                iwm.endWriteMemberProxy();
+                            }
+                        }
+                    }else {
+                        for (MemberProxy proxy : proxies) {
+                            if (((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)) {
+                                TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                                if(proxy instanceof Commissioner){
+                                    ((Commissioner) proxy).write(ta2, sink, proxy.getValue(obj));
+                                }else {
+                                    sink.name(proxy.getPropertyName());
+                                    ta2.write(sink, proxy.getValue(obj));
+                                }
                             }
                         }
                     }
@@ -103,6 +125,9 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
                 }
             }
             sink.endObject();
+            if(iwm != null){
+                iwm.endWriteObject();
+            }
         }
         return 0;
     }
@@ -115,36 +140,79 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         if(ta != null){
             return ta.read(source);
         }
+        ReflectyReader2 orm = source instanceof ReflectyReader2 ? (ReflectyReader2)source : null;
+        ReflectyContext context = mTAM.getReflectyContext();
 
-        Object obj = mTAM.getReflectyContext().newInstance(mClazz);
+        Object obj = context.newInstance(mClazz);
         List<MemberProxy> proxies = mReflecty.getMemberProxies(mClazz);
-        source.beginObject(mTAM.getReflectyContext(),mClazz);
+
+        if(orm != null){
+            orm.beginReadObject(context, mClazz);
+        }
+        source.beginObject(context,mClazz);
         try {
             if(!mNoMappingName){
-                while (source.hasNext()){
-                    MemberProxy proxy = findMemberProxy(proxies, source.nextName());
-                    if(proxy != null && ((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
-                        TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
-                        if(proxy instanceof Commissioner){
-                            ((Commissioner) proxy).read(ta2, obj, source);
+                if(orm != null){
+                    while (source.hasNext()){
+                        MemberProxy proxy = findMemberProxy(proxies, source.nextName());
+                        if(proxy != null && ((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
+                            orm.beginReadMemberProxy(context, proxy);
+                            TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                            if(proxy instanceof Commissioner){
+                                ((Commissioner) proxy).read(ta2, obj, source);
+                            }else {
+                                proxy.setValue(obj, ta2.read(source));
+                            }
+                            orm.endReadMemberProxy();
                         }else {
-                            proxy.setValue(obj, ta2.read(source));
+                            source.skipValue();
                         }
-                    }else {
-                        source.skipValue();
+                    }
+                }else {
+                    while (source.hasNext()){
+                        MemberProxy proxy = findMemberProxy(proxies, source.nextName());
+                        if(proxy != null && ((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
+                            TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                            if(proxy instanceof Commissioner){
+                                ((Commissioner) proxy).read(ta2, obj, source);
+                            }else {
+                                proxy.setValue(obj, ta2.read(source));
+                            }
+                        }else {
+                            source.skipValue();
+                        }
                     }
                 }
             }else {
-                for (MemberProxy proxy : proxies){
-                    if(((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
-                        TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
-                        if(proxy instanceof Commissioner){
-                            ((Commissioner) proxy).read(ta2, obj, source);
+                if(orm != null){
+                    for (MemberProxy proxy : proxies){
+                        if(((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
+                            orm.beginReadMemberProxy(context, proxy);
+
+                            TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                            if(proxy instanceof Commissioner){
+                                ((Commissioner) proxy).read(ta2, obj, source);
+                            }else {
+                                proxy.setValue(obj, ta2.read(source));
+                            }
+
+                            orm.endReadMemberProxy();
                         }else {
-                            proxy.setValue(obj, ta2.read(source));
+                            source.skipValue();
                         }
-                    }else {
-                        source.skipValue();
+                    }
+                }else {
+                    for (MemberProxy proxy : proxies){
+                        if(((VersionMemberProxy) proxy).isVersionMatched(mApplyVersion)){
+                            TypeAdapter<ReflectyWriter, ReflectyReader> ta2 = getTypeAdapter(proxy.getTypeNode(), mTAM, mApplyVersion);
+                            if(proxy instanceof Commissioner){
+                                ((Commissioner) proxy).read(ta2, obj, source);
+                            }else {
+                                proxy.setValue(obj, ta2.read(source));
+                            }
+                        }else {
+                            source.skipValue();
+                        }
                     }
                 }
             }
@@ -152,6 +220,9 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
             throw new RuntimeException(e);
         }
         source.endObject();
+        if(orm != null){
+            orm.endReadObject();
+        }
         return obj;
     }
 
