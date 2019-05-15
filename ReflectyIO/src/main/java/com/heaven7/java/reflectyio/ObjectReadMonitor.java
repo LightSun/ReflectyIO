@@ -4,11 +4,11 @@ import com.heaven7.java.reflecty.MemberProxy;
 import com.heaven7.java.reflecty.ReflectyContext;
 
 /**
- * the object read monitor
+ * the object read monitor . which used when read self-object. that means non-collection or non-map.
  * @author heaven7
  * @since 1.0.5
  */
-public interface ReflectyReader2 extends ReflectyReader{
+public interface ObjectReadMonitor {
 
     /**
      * called on begin read object

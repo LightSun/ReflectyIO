@@ -4,11 +4,11 @@ import com.heaven7.java.reflecty.MemberProxy;
 import com.heaven7.java.reflecty.ReflectyContext;
 
 /**
- * the object write monitor.
+ * the object write monitor. which used when write self-object. that means non-collection or non-map
  * @author heaven7
  * @since 1.0.5
  */
-public interface ReflectyWriter2 extends ReflectyWriter{
+public interface ObjectWriteMonitor {
 
     /**
      * called on begin write object

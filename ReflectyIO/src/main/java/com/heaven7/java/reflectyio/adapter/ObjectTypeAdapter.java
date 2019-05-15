@@ -85,7 +85,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         }else {
             //last is use member
             ReflectyContext context = mTAM.getReflectyContext();
-            ReflectyWriter2 iwm = sink instanceof ReflectyWriter2 ? (ReflectyWriter2)sink : null;
+            ObjectWriteMonitor iwm = sink instanceof ObjectWriteMonitor ? (ObjectWriteMonitor)sink : null;
             if(iwm != null){
                 iwm.beginWriteObject(context, mClazz, obj);
             }
@@ -140,7 +140,7 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         if(ta != null){
             return ta.read(source);
         }
-        ReflectyReader2 orm = source instanceof ReflectyReader2 ? (ReflectyReader2)source : null;
+        ObjectReadMonitor orm = source instanceof ObjectReadMonitor ? (ObjectReadMonitor)source : null;
         ReflectyContext context = mTAM.getReflectyContext();
 
         Object obj = context.newInstance(mClazz);
