@@ -1,13 +1,15 @@
 package com.heaven7.java.xml;
 
+import com.heaven7.java.reflecty.MemberProxy;
 import com.heaven7.java.reflecty.ReflectyContext;
+import com.heaven7.java.reflectyio.ObjectWriteMonitor;
 import com.heaven7.java.reflectyio.ReflectyWriter;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Stack;
 
-public final class XmlWriter implements ReflectyWriter, IXmlWriter {
+public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteMonitor {
 
     private static final String DEFAULT_NAME = "root";
     private static final byte TYPE_OBJECT = 1;
@@ -104,6 +106,7 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter {
     @Override
     public void endObject() throws IOException {
         pWriter.endObject(impl, name);
+        impl.pop();
         name = null;
         parentTypeStack.pop();
     }
@@ -141,5 +144,25 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter {
                 pWriter = mObjWriter;
                 break;
         }
+    }
+
+    @Override
+    public void beginWriteObject(ReflectyContext context, Class<?> defineClass, Object obj) {
+
+    }
+
+    @Override
+    public void endWriteObject() {
+
+    }
+
+    @Override
+    public void beginWriteMemberProxy(ReflectyContext context, MemberProxy proxy) {
+
+    }
+
+    @Override
+    public void endWriteMemberProxy() {
+
     }
 }

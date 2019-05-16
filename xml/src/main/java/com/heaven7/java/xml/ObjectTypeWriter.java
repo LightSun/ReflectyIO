@@ -33,9 +33,7 @@ public class ObjectTypeWriter implements ParentTypeWriter {
     public void endArray(XmlWriterImpl impl, String lastName) throws IOException {
 
     }
-
     @Override
     public void endObject(XmlWriterImpl impl, String lastName) throws IOException {
-        impl.pop();
     }
 }
