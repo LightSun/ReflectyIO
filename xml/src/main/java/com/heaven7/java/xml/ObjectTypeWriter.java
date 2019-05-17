@@ -2,7 +2,7 @@ package com.heaven7.java.xml;
 
 import java.io.IOException;
 
-public class ObjectTypeWriter implements ParentTypeWriter {
+/*public*/ class ObjectTypeWriter implements ParentTypeWriter {
 
     @Override
     public void nullValue(XmlWriterImpl impl, String lastName) throws IOException {
@@ -32,8 +32,5 @@ public class ObjectTypeWriter implements ParentTypeWriter {
     @Override
     public void endArray(XmlWriterImpl impl, String lastName) throws IOException {
 
-    }
-    @Override
-    public void endObject(XmlWriterImpl impl, String lastName) throws IOException {
     }
 }

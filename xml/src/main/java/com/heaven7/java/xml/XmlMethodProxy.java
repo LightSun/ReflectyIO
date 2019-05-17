@@ -4,30 +4,43 @@ import com.heaven7.java.reflectyio.ReflectyMethodProxy;
 
 import java.lang.reflect.Method;
 
-public class XmlMethodProxy extends ReflectyMethodProxy implements XmlMemberProxy{
+/**
+ * the xml method proxy
+ * @author heaven7
+ */
+/*public*/ class XmlMethodProxy extends ReflectyMethodProxy implements XmlMemberProxy, XmlMemberProxyHelper.Callback{
 
-    private String elementPath;
-    private String[] elementNames;
-    private int index = -1;
+    private final XmlMemberProxyHelper mHelper;
 
     public XmlMethodProxy(Class<?> ownerClass, Method get, Method set, String property) {
         super(ownerClass, get, set, property);
+        mHelper = new XmlMemberProxyHelper(this);
     }
 
     @Override
-    public String nextElementName() {
-        if(elementPath == null){
-            XmlElement element = getGetMethod().getAnnotation(XmlElement.class);
-            if(element == null){
-                throw new XmlException("for complex xml element. you must define the element names. like 'root/person/...'");
-            }
-            elementPath = element.value();
-            elementNames = elementPath.split("/");
-        }
-        if(index + 1 > elementNames.length){
-            return null;
-        }
-        index ++;
-        return elementNames[index];
+    public String nextElementName(){
+        return mHelper.elementName(true);
+    }
+    @Override
+    public boolean hasNextElementName() {
+        return mHelper.hasNextName();
+    }
+    @Override
+    public String currentElementName() {
+        return mHelper.elementName(false);
+    }
+
+    @Override
+    public void beginElement(Object ref) {
+
+    }
+
+    @Override
+    public void endElement() {
+        mHelper.reset();
+    }
+    @Override
+    public XmlElement getXmlElement() {
+        return getGetMethod().getAnnotation(XmlElement.class);
     }
 }

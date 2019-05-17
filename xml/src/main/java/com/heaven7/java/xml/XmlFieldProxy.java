@@ -4,30 +4,42 @@ import com.heaven7.java.reflectyio.ReflectyFieldProxy;
 
 import java.lang.reflect.Field;
 
-public class XmlFieldProxy extends ReflectyFieldProxy implements XmlMemberProxy{
+/**
+ * the xml field proxy
+ * @author heaven7
+ */
+/*public*/ class XmlFieldProxy extends ReflectyFieldProxy implements XmlMemberProxy, XmlMemberProxyHelper.Callback{
 
-    private String elementPath;
-    private String[] elementNames;
-    private int index = -1;
+    private final XmlMemberProxyHelper mHelper;
 
     public XmlFieldProxy(Class<?> ownerClass, Field field, String property) {
         super(ownerClass, field, property);
+        mHelper = new XmlMemberProxyHelper(this);
     }
 
     @Override
     public String nextElementName(){
-        if(elementPath == null){
-            XmlElement element = getField().getAnnotation(XmlElement.class);
-            if(element == null){
-                throw new XmlException("for complex xml element. you must define the element names. like 'root/person/...'");
-            }
-            elementPath = element.value();
-            elementNames = elementPath.split("/");
-        }
-        if(index + 1 > elementNames.length){
-            return null;
-        }
-        index ++;
-        return elementNames[index];
+        return mHelper.elementName(true);
+    }
+    @Override
+    public boolean hasNextElementName() {
+        return mHelper.hasNextName();
+    }
+    @Override
+    public String currentElementName() {
+        return mHelper.elementName(false);
+    }
+
+    @Override
+    public void beginElement(Object ref) {
+
+    }
+    @Override
+    public void endElement() {
+        mHelper.reset();
+    }
+    @Override
+    public XmlElement getXmlElement() {
+        return getField().getAnnotation(XmlElement.class);
     }
 }

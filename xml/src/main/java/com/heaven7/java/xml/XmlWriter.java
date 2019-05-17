@@ -11,15 +11,14 @@ import java.util.Stack;
 
 public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteMonitor {
 
-    private static final String DEFAULT_NAME = "root";
     private static final byte TYPE_OBJECT = 1;
     private static final byte TYPE_ARRAY  = 2;
-    //private static final byte TYPE_MAP    = 3;
+    private static final byte TYPE_MAP    = 3;
 
     private final ArrayTypeWriter mArrayWriter = new ArrayTypeWriter();
     private final ObjectTypeWriter mObjWriter  = new ObjectTypeWriter();
 
-    private final Stack<Byte> parentTypeStack = new Stack<>();
+    private final Stack<StackNode> parentTypeStack = new Stack<>();
     private final XmlWriterImpl impl;
     private ParentTypeWriter pWriter;
     private String name;
@@ -30,23 +29,14 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
 
     @Override
     public void begin(Object obj) throws IOException {
-        final String name;
-        XmlElement root = obj.getClass().getAnnotation(XmlElement.class);
-        if(root != null){
-            name = root.value();
-        }else {
-            name = DEFAULT_NAME;
-        }
-        impl.element(name);
     }
 
     @Override
     public void end(Object obj) throws IOException{
-
     }
-
     @Override
     public void name(String s) throws IOException {
+        System.out.println("name: " + s);
         this.name = s;
     }
 
@@ -77,7 +67,7 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
 
     @Override
     public void beginArray() throws IOException {
-        parentTypeStack.push(TYPE_ARRAY);
+        parentTypeStack.push(new StackNode(TYPE_ARRAY));
         setParentWriter();
     }
 
@@ -85,29 +75,75 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
     public void endArray() throws IOException {
         pWriter.endArray(impl, name);
         name = null;
-        parentTypeStack.pop();
+        StackNode node = parentTypeStack.pop();
+        while (node.elementCount > 0){
+            impl.pop();
+            node.elementCount -- ;
+        }
     }
 
     @Override
     public void beginObject(ReflectyContext context, Class<?> clazz) throws IOException {
         //last is list. and this is map ? add child element ?
+        boolean isMap = context.isMap(clazz);
+        byte lastType = -1;
         if(!parentTypeStack.isEmpty()){
-            if(parentTypeStack.peek() == TYPE_OBJECT){
-                if(name != null){
-                    impl.element(name);
-                    name = null;
-                }
+            lastType = parentTypeStack.peek().type;
+        }
+        XmlMemberProxy xmp = !mProxyStack.isEmpty() ? mProxyStack.peek() : null;
+
+        StackNode node = new StackNode(isMap ? TYPE_MAP : TYPE_OBJECT);
+        if(lastType == TYPE_ARRAY){
+            makeLastNameAsElement();
+            doMakeElementName(xmp, node, false);
+        }else {
+            if(isMap){
+                makeLastNameAsElement();
+            }else {
+                doMakeElementName(xmp, node, lastType == TYPE_MAP);
             }
         }
-        parentTypeStack.push(TYPE_OBJECT);
+
+        parentTypeStack.push(node);
         setParentWriter();
+    }
+
+    private void doMakeElementName(XmlMemberProxy xmp, StackNode node, boolean lastIsMap) throws IOException {
+        String name;
+        //last is map. means key often is the element name.
+        if(lastIsMap){
+            name = this.name;
+        }else {
+            name = null;
+        }
+        //dynamic first
+        if (name == null && xmp != null) {
+            name = xmp.elementName();
+        }
+        if(name == null && mElementName != null){
+            name = mElementName;
+        }
+        if (name == null) {
+            throw new XmlException("you must config the xml element name by @XmlElement. it can often used for Class, field, and method.");
+        }
+        impl.element(name);
+        node.elementCount++;
+    }
+
+    private void makeLastNameAsElement() throws IOException {
+        if(this.name != null){
+            impl.element(this.name);
+            this.name = null;
+            //mark this to last stack node.
+            parentTypeStack.peek().elementCount++;
+        }
     }
 
     @Override
     public void endObject() throws IOException {
         pWriter.endObject(impl, name);
-        impl.pop();
         name = null;
+        impl.pop();
         parentTypeStack.pop();
     }
 
@@ -119,11 +155,14 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
     public void bodyText(Object value) throws IOException{
         impl.text(value);
     }
-
+    @Override
+    public void attribute(String name, Object value) throws IOException{
+        impl.attribute(name, value);
+    }
     @Override
     public void element(String name) throws IOException{
         impl.element(name);
-        parentTypeStack.push(TYPE_OBJECT);
+        parentTypeStack.push(new StackNode(TYPE_OBJECT));
         setParentWriter();
     }
 
@@ -136,33 +175,62 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
         if(parentTypeStack.isEmpty()){
             return;
         }
-        switch (parentTypeStack.peek()){
+        switch (parentTypeStack.peek().type){
             case TYPE_ARRAY:
                 pWriter = mArrayWriter;
                 break;
             case TYPE_OBJECT:
+            case TYPE_MAP:
                 pWriter = mObjWriter;
                 break;
         }
     }
 
+    //---------------------------------------------------
+
     @Override
     public void beginWriteObject(ReflectyContext context, Class<?> defineClass, Object obj) {
-
+        XmlElement xe = defineClass.getAnnotation(XmlElement.class);
+        if(xe == null && obj != null){
+            xe = obj.getClass().getAnnotation(XmlElement.class);
+        }
+        if(xe != null){
+            mElementName = xe.value();
+        }
     }
 
     @Override
     public void endWriteObject() {
-
+        mElementName = null;
     }
 
     @Override
     public void beginWriteMemberProxy(ReflectyContext context, MemberProxy proxy) {
-
+        System.out.println(proxy.getPropertyName());
+        try {
+            XmlMemberProxy mProxy = (XmlMemberProxy) proxy;
+            mProxy.beginElement(this);
+            mProxyStack.push(mProxy);
+        }catch (ClassCastException e){
+            throw new RuntimeException("for xml, member proxy should impl XmlMemberProxy.");
+        }
     }
 
     @Override
     public void endWriteMemberProxy() {
+       // System.out.println("-------- current:  \n   " + impl.getBaseWriter());
+        mProxyStack.pop().endElement();
+        System.out.println("-------- current:  \n   " + impl.getBaseWriter());
+    }
 
+    private String mElementName;
+    private final Stack<XmlMemberProxy> mProxyStack = new Stack<>();
+
+    static class StackNode{
+        final byte type;
+        byte elementCount;
+        public StackNode(byte type) {
+            this.type = type;
+        }
     }
 }

@@ -6,6 +6,8 @@ public interface IXmlWriter {
 
     void bodyText(Object value) throws IOException;
 
+    void attribute(String name, Object value) throws IOException;
+
     void element(String name) throws IOException;
 
     void pop() throws IOException;

@@ -51,6 +51,9 @@ public class XmlWriterImpl extends Writer {
 		this.writer = writer;
 	}
 
+	public Writer getBaseWriter() {
+		return writer;
+	}
 	private void indent () throws IOException {
 		int count = indent;
 		if (currentElement != null) count++;

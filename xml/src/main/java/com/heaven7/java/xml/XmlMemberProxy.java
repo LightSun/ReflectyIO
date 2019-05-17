@@ -1,11 +1,27 @@
 package com.heaven7.java.xml;
 
-public interface XmlMemberProxy {
+import com.heaven7.java.reflecty.MemberProxy;
 
-    void beginElement(Object ref);
+/**
+ * indicate the xml member proxy
+ * @author heaven7
+ */
+/*public*/ interface XmlMemberProxy extends MemberProxy{
 
     String nextElementName();
 
+    String currentElementName();
+
+    boolean hasNextElementName();
+
+    void beginElement(Object ref);
+
     void endElement();
 
+   default String elementName(){
+        if(hasNextElementName()){
+            return nextElementName();
+        }
+        return currentElementName();
+    }
 }

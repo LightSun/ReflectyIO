@@ -1,7 +1,10 @@
 package com.heaven7.java.xml.entity;
 
+import com.heaven7.java.xml.XmlElement;
+
 import java.util.Objects;
 
+@XmlElement("info")
 public class Info {
 
     private String addr;

@@ -39,8 +39,4 @@ import java.io.IOException;
         sb.delete(0, sb.length());
         impl.attribute(lastName, str);
     }
-    @Override
-    public void endObject(XmlWriterImpl impl, String lastName) {
-
-    }
 }

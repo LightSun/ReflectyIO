@@ -37,6 +37,9 @@ public class XmlTest {
         p.setInfoMap(createInfoMap());
         p.setText("fgkfdgfdlg8df89g8fd9g89fd99999999999gklal;l;d;lasd7as7d5asd5as56ddddddas56ddddd5s6ad");
 
+        p.setMapListInfo(createMapListInfo());
+        p.setInfoMap2(createInfoMap2());
+
         testImpl(new TypeToken<Person>(){}, p);
         clean();
     }
@@ -55,6 +58,21 @@ public class XmlTest {
         TypeToken<List<Map<String, Integer>>> tt = new TypeToken<List<Map<String, Integer>>>() {
         };
         testImpl(tt, list);
+    }
+
+    private Map<Info, String> createInfoMap2() {
+        Map<Info, String> map = new HashMap<>();
+        map.put(createInfo(1), "value1");
+        map.put(createInfo(2), "value2");
+        map.put(createInfo(3), "value3");
+        return map;
+    }
+
+    private Map<String, List<Info>> createMapListInfo() {
+        Map<String, List<Info>> map = new HashMap<>();
+        map.put("key1", Arrays.asList(createInfo()));
+        map.put("key2", Arrays.asList(createInfo(), createInfo(), createInfo()));
+        return map;
     }
 
     private void testImpl(TypeToken<?> tt, Object raw) throws IOException {
@@ -76,6 +94,7 @@ public class XmlTest {
         Map<String, Info> map = new HashMap<>();
         map.put("info1", createInfo());
         map.put("info2", createInfo());
+        map.put("info3", createInfo());
         return map;
     }
 
@@ -87,6 +106,12 @@ public class XmlTest {
         Info info = new Info();
         info.setAddr("addr1");
         info.setPhone("12345");
+        return info;
+    }
+    private Info createInfo(int index) {
+        Info info = new Info();
+        info.setAddr("addr__" + index);
+        info.setPhone("phone__" + index);
         return info;
     }
 

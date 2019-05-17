@@ -14,16 +14,32 @@ public class Person {
     private String name;
     private List<String> list;
     private Map<String, Integer> map;
+    @XmlElement("list_map")
     private List<Map<String, Integer>> listMap; //用注解，映射child element name.
     private Map<String, List<Integer>> mapList;
-    //private Map<String, List<Info>> mapList;
+    private Map<String, List<Info>> mapListInfo;
 
-    private List<Info> infoList;
-    private Map<String, Info> infoMap;
-    private Info info;
+    private  List<Info> infoList;
+    private  Map<String, Info> infoMap;
+    private transient Map<Info, String> infoMap2; //this is not support for xml.
+    private  Info info;
 
     @XmlBody
-    private String text;
+    private transient String text;
+
+    public Map<Info, String> getInfoMap2() {
+        return infoMap2;
+    }
+    public void setInfoMap2(Map<Info, String> infoMap2) {
+        this.infoMap2 = infoMap2;
+    }
+
+    public Map<String, List<Info>> getMapListInfo() {
+        return mapListInfo;
+    }
+    public void setMapListInfo(Map<String, List<Info>> mapListInfo) {
+        this.mapListInfo = mapListInfo;
+    }
 
     public String getText() {
         return text;

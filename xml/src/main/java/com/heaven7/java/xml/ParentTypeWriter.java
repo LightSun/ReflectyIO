@@ -2,7 +2,7 @@ package com.heaven7.java.xml;
 
 import java.io.IOException;
 
-public interface ParentTypeWriter {
+/*public*/ interface ParentTypeWriter {
 
     void nullValue(XmlWriterImpl impl, String lastName) throws IOException;
 
@@ -15,7 +15,5 @@ public interface ParentTypeWriter {
     void value(XmlWriterImpl impl, String lastName, String obj) throws IOException;
 
     void endArray(XmlWriterImpl impl, String lastName) throws IOException;
-
-    void endObject(XmlWriterImpl impl, String lastName) throws IOException;
 
 }
