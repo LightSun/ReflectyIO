@@ -25,6 +25,7 @@ import com.heaven7.java.reflectyio.anno.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
@@ -84,9 +85,10 @@ public class SimpleReflectyDelegate implements ReflectyDelegate<TypeAdapter<Refl
         return new ReflectyFieldProxy(owner, field, property);
     }
 
+    //ignore transient field. changed 1.0.6
     @Override
     public boolean shouldIncludeField(Field field, ReflectyField fieldAnno, boolean isInherit) {
-        return true;
+        return (field.getModifiers() & Modifier.TRANSIENT) != Modifier.TRANSIENT;
     }
 
     @Override
