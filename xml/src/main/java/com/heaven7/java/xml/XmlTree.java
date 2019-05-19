@@ -30,6 +30,7 @@ import java.util.Map;
  */
 /*public*/ class XmlTree implements Tree{
 
+    //TODO wait parse body by 'extend ObjectTypeAdapter'
     private static final String NAME_BODY = XmlTree.class.getName() + "_@body@";
 
     List<XmlTree> children = new ArrayList<>();
