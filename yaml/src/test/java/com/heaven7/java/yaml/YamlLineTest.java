@@ -42,6 +42,9 @@ public class YamlLineTest {
       Assert.assertEquals(line.type, YamlLine.TYPE_ARRAY_EMPTY);
       Assert.assertEquals(line.name, null);
       Assert.assertEquals(line.value, null);
+
+      line = YamlLine.parse("#sdjfsjfsjfdjs");
+      Assert.assertTrue(line == null);
    }
 
    static final String CONTENT = "  age: 28\n" +

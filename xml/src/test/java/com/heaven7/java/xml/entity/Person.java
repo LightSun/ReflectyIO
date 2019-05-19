@@ -21,11 +21,11 @@ public class Person {
 
     private  List<Info> infoList;
     private  Map<String, Info> infoMap;
-    private transient Map<Info, String> infoMap2; //this is not support for xml.
+    private transient Map<Info, String> infoMap2; //this is not support for xml serialize/deserialize. so add transient
     private  Info info;
 
     @XmlBody
-    private transient String text;
+    private String text;
 
     public Map<Info, String> getInfoMap2() {
         return infoMap2;

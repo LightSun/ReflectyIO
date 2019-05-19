@@ -93,6 +93,16 @@ public class YamlWriter implements ReflectyWriter {
     }
 
     @Override
+    public void begin(Object obj) throws IOException {
+
+    }
+
+    @Override
+    public void end(Object obj) throws IOException {
+
+    }
+
+    @Override
     public void name(String s) {
         writer.name(s);
     }

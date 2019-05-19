@@ -226,7 +226,14 @@ public class ObjectTypeAdapter extends AbstractTypeAdapter {
         return obj;
     }
 
-    private static MemberProxy findMemberProxy(List<MemberProxy> proxies, String name) {
+    /**
+     * called on find member proxy by name.
+     * @param proxies the member proxies.
+     * @param name the name from {@linkplain ReflectyReader#nextName()}
+     * @return the member proxy.
+     * @since 1.0.6
+     */
+    protected MemberProxy findMemberProxy(List<MemberProxy> proxies, String name) {
         for (MemberProxy proxy : proxies){
             if(name.equals(proxy.getPropertyName())){
                 return proxy;

@@ -1,5 +1,22 @@
+/*
+ * Copyright 2019
+ * heaven7(donshine723@gmail.com)
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.heaven7.java.xml;
 
+import com.heaven7.java.base.util.Predicates;
 import com.heaven7.java.reflecty.utils.Pair;
 
 import java.io.IOException;
@@ -7,7 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * the xml tree
+ * @author heaven7
+ */
 /*public*/ class XmlTree implements Tree{
+
+    private static final String NAME_BODY = XmlTree.class.getName() + "_@body@";
 
     List<XmlTree> children = new ArrayList<>();
     XmlTree parent;
@@ -18,9 +41,12 @@ import java.util.Map;
     final List<Attribute> attrList;
     boolean attributeEnd;
 
-    public XmlTree(){
+    String bodyText;
+
+   /* public XmlTree(){
         attrList = null;
-    }
+        hasBody = false;
+    }*/
     public XmlTree(XmlReaderImpl.Element element) {
         this.element = element;
         if(element.getAttributes() != null){
@@ -31,22 +57,37 @@ import java.util.Map;
         }else {
             attrList = null;
         }
+        this.bodyText = element.getText();
     }
+
+    public void reset(){
+        bodyText = element.getText();
+        attributeEnd = false;
+        attibuteIndex = -1;
+        childIndex = -1;
+        for (XmlTree tree : children){
+            tree.reset();
+        }
+    }
+
     public void addChild(XmlTree gl) {
         children.add(gl);
         gl.parent = this;
     }
     @Override
     public boolean hasNextChild() {
-        if(attributeEnd){
-            return children.size() > childIndex + 1;
+        if(Predicates.isEmpty(attrList) || attributeEnd){
+            if(children.size() > childIndex + 1){
+                return true;
+            }
+            return bodyText != null;
         }else {
             return attrList.size() > attibuteIndex + 1;
         }
     }
     @Override
     public Tree nextChild(){
-        if(attributeEnd){
+        if(Predicates.isEmpty(attrList) || attributeEnd){
             childIndex += 1;
             if(children.size() > childIndex){
                 return children.get(childIndex);
@@ -57,6 +98,11 @@ import java.util.Map;
             if(attrList.size() > attibuteIndex){
                 return attrList.get(attibuteIndex);
             }
+        }
+        if(bodyText != null){
+            StringTree tree = new StringTree(this, NAME_BODY, bodyText);
+            bodyText = null;
+            return tree;
         }
         return null;
     }
@@ -87,7 +133,7 @@ import java.util.Map;
             super(key, value);
             this.parent = parent;
             for (String str : value.split(",")){
-                list.add(new StringTree(this, str));
+                list.add(new StringTree(this, null, str));
             }
         }
         @Override
@@ -96,7 +142,10 @@ import java.util.Map;
         }
         @Override
         public Tree nextChild() {
-            return list.get(++index);
+            if(list.size() > index + 1){
+                return list.get(++index);
+            }
+            return null;
         }
         @Override
         public Tree getParent() {
@@ -108,20 +157,19 @@ import java.util.Map;
         }
         @Override
         public String getName() throws IOException {
-            throw new UnsupportedOperationException();
+            return key;
         }
         @Override
         public String getValue() {
-            throw new UnsupportedOperationException();
+            return value;
         }
     }
-    static class StringTree implements Tree{
+    static class StringTree extends Pair<String, String> implements Tree{
         final Tree parent;
-        String value;
 
-        public StringTree(Tree parent, String value) {
+        public StringTree(Tree parent, String name, String value) {
+            super(name, value);
             this.parent = parent;
-            this.value = value;
         }
         @Override
         public boolean hasNextChild() {
@@ -137,11 +185,17 @@ import java.util.Map;
         }
         @Override
         public String getBodyText() throws IOException {
-            throw new UnsupportedOperationException();
+            if(key == null){
+                throw new UnsupportedOperationException();
+            }
+            return value;
         }
         @Override
         public String getName() throws IOException {
-            throw new UnsupportedOperationException();
+            if(key == null){
+                throw new UnsupportedOperationException();
+            }
+            return key;
         }
         @Override
         public String getValue() {

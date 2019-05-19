@@ -16,7 +16,11 @@
  */
 package com.heaven7.java.yaml;
 
-/*public*/ class BaseParentWriter  {
+/**
+ * the base parent writer
+ * @author heaven7
+ */
+/*public*/ abstract class BaseParentWriter implements ParentTypeWriter {
 
     private HostWriter hostWriter;
 

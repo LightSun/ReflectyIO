@@ -175,6 +175,19 @@ public class YamlReader implements ReflectyReader {
             }
         }
     }
+
+    @Override
+    public void begin() throws IOException {
+
+    }
+
+    @Override
+    public void end() throws IOException {
+        current = root;
+        parent = null;
+        root.reset();
+    }
+
     @Override
     public String nextString() {
         String str = current.line.value;

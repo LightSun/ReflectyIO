@@ -19,6 +19,10 @@ package com.heaven7.java.yaml;
 
 import com.heaven7.java.base.util.Platforms;
 
+/**
+ * the parent array writer
+ * @author heaven7
+ */
 /*public*/ class ParentArrayWriter extends BaseParentWriter implements ParentTypeWriter {
 
     public ParentArrayWriter(HostWriter hostWriter) {

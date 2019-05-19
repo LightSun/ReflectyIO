@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.4.0'
+        classpath 'com.novoda:bintray-release:0.9'
     }
 }
 
@@ -17,6 +17,11 @@ allprojects {
     tasks.withType(Javadoc) {
         options.addStringOption('Xdoclint:none', '-quiet')
         options.addStringOption('encoding', 'UTF-8')
+    }
+    tasks.withType(Javadoc) {
+        options{
+            links "http://docs.oracle.com/javase/8/docs/api"
+        }
     }
 }
 

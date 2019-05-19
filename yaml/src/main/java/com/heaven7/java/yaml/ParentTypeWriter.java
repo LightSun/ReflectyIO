@@ -16,6 +16,10 @@
  */
 package com.heaven7.java.yaml;
 
+/**
+ * the parent type writer
+ * @author heaven7
+ */
 /*public*/ interface ParentTypeWriter {
     void name(String s);
 

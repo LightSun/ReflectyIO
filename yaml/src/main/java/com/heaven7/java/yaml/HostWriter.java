@@ -16,6 +16,9 @@
  */
 package com.heaven7.java.yaml;
 
+/**
+ * the host writer
+ */
 /*public*/ interface HostWriter {
 
     String nextSpace();

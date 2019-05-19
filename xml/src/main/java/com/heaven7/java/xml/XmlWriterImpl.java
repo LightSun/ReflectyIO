@@ -39,7 +39,7 @@ import java.io.Writer;
  * @author Nathan Sweet
  */
 //@on
-public class XmlWriterImpl extends Writer {
+/*public*/ class XmlWriterImpl extends Writer {
 	private final Writer writer;
 	private final Array<String> stack = new Array<>();
 	private String currentElement;

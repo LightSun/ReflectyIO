@@ -19,8 +19,12 @@ package com.heaven7.java.yaml;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the GroupLine indicate the yaml line tree
+ * @author heaven7
+ */
 /*public*/ class GroupLine {
-    List<GroupLine> childen = new ArrayList<>();
+    List<GroupLine> children = new ArrayList<>();
     GroupLine parent;
     YamlLine line;
 
@@ -32,31 +36,38 @@ import java.util.List;
         line = yl;
     }
     public void addChild(GroupLine gl) {
-        childen.add(gl);
+        children.add(gl);
         gl.parent = this;
     }
-    public boolean hasNextBrother() {
-        return parent.childen.size() > parent.childIndex + 1;
-    }
-    public GroupLine nextBrother() {
-        parent.childIndex += 1;
-        return parent.childen.get(childIndex);
-    }
-    public boolean hasNextChild() {
-        return childen.size() > childIndex + 1;
+
+    public void reset(){
+        childIndex = -1;
+        for (GroupLine line : children){
+            line.reset();
+        }
     }
     public GroupLine nextChild(){
         childIndex += 1;
-        if(childen.size() > childIndex){
-            return childen.get(childIndex);
+        if(children.size() > childIndex){
+            return children.get(childIndex);
         }
         return null;
     }
-
     @Override
     public String toString() {
         return "GroupLine{" +
                 "line=" + line +
                 '}';
     }
+
+   /* public boolean hasNextBrother() {
+        return parent.children.size() > parent.childIndex + 1;
+    }
+    public GroupLine nextBrother() {
+        parent.childIndex += 1;
+        return parent.children.get(childIndex);
+    }
+    public boolean hasNextChild() {
+        return children.size() > childIndex + 1;
+    }*/
 }

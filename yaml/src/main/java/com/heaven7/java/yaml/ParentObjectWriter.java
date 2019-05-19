@@ -18,6 +18,10 @@ package com.heaven7.java.yaml;
 
 import com.heaven7.java.base.util.Platforms;
 
+/**
+ * the object writer
+ * @author heaven7
+ */
 /*public*/ class ParentObjectWriter extends BaseParentWriter implements ParentTypeWriter {
 
     public ParentObjectWriter(HostWriter hostWriter) {

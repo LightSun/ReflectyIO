@@ -16,7 +16,10 @@
  */
 package com.heaven7.java.yaml;
 
-
+/**
+ * the yaml line
+ * @author heaven7
+ */
 class YamlLine {
 
     static final byte TYPE_PAIR  = 1;
@@ -33,6 +36,10 @@ class YamlLine {
     public static YamlLine parse(String line){
         YamlLine yl = new YamlLine();
         final String trim = line.trim();
+        //for annotate line. just return null.
+        if(trim.startsWith("#")){
+            return null;
+        }
         int index = line.indexOf(trim);
         if(trim.startsWith("-")){
             yl.type = trim.length() == 1 ? TYPE_ARRAY_EMPTY :TYPE_ARRAY;
