@@ -22,8 +22,17 @@
                   .read(new StringReader(mWriter.toString()));
   ```
    - xml, yaml 数据同理
-- 4, 内置3种数据的序列化和反序列化。即json,yaml,xml
-- 5, 支持自行扩展插件。核心方法如下:
+- 4, 支持自定义对象关于版本号的兼容。 通过注解@Since, @Until和使用ReflectyIo时指定版本。
+```java
+new ReflectyIo()
+                .xml()
+                .typeToken(tt)
+                .version(2.0f)
+                .build()
+                .write(mWriter, raw);
+```
+- 5, 内置可选3种数据的序列化和反序列化。即json,yaml,xml
+- 6, 支持自行扩展插件。核心方法如下:
 ```java
 ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlugin plugin);
 ```
