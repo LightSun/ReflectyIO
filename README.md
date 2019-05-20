@@ -2,10 +2,10 @@
 这是一个序列化和反序列化数据的一个框架。支持任意数据格式的扩展(以插件的形式)。
 
 ## 特征
-- 1， 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
-- 2,  支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
+- 1, 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
+- 2, 支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
 甚至不继承collection的集合，以及不实现map接口的map. 
-- 3,  标准化调用接口。使用非常简单。
+- 3, 标准化调用接口。使用非常简单。
   - 比如写json.
   ```java
   new ReflectyIo().json()
@@ -30,11 +30,11 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 
 ## 优缺点
 - 优势：
-  - 1，统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
+  - 1, 统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
   - 2, 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
   
 - 劣势：
-  - 1，关于json的序列化和解析，我是偷懒的。直接用的Gson库的JsonWriter和JsonReader.
+  - 1, 关于json的序列化和解析，我是偷懒的。直接用的Gson库的JsonWriter和JsonReader.
   - 2, 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象。不能是集合类型。
   
 ## 感谢
