@@ -31,7 +31,7 @@ import java.lang.reflect.Modifier;
  * the xml reflecty delegate
  * @author heaven7
  */
-public class XmlReflectyDelegate extends SimpleReflectyDelegate{
+/*public*/ class XmlReflectyDelegate extends SimpleReflectyDelegate{
 
     @Override
     public boolean shouldIncludeField(Field field, ReflectyField fieldAnno, boolean isInherit) {

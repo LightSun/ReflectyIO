@@ -23,9 +23,12 @@ import com.heaven7.java.reflectyio.anno.ReflectyClass;
 import com.heaven7.java.reflectyio.anno.ReflectyField;
 import com.heaven7.java.reflectyio.anno.ReflectyInherit;
 import com.heaven7.java.reflectyio.anno.ReflectyMethod;
+import com.heaven7.java.reflectyio.plugin.ReflectyPlugin;
 import com.heaven7.java.reflectyio.plugin.ReflectyPluginManager;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Type;
 
 /**
@@ -47,6 +50,7 @@ public final class ReflectyIo {
     private float version = 1.0f;
 
     private TypeAdapter<ReflectyWriter, ReflectyReader> adapter;
+    private ReflectyPlugin plugin;
 
     /**
      * set the Reflecty Evaluator
@@ -108,15 +112,42 @@ public final class ReflectyIo {
      * assign the plugin to create {@linkplain ITypeAdapterManager}.
      * @param type the type
      * @return this
+     * @see ReflectyPlugin
      * @since 1.0.6
      */
     public ReflectyIo pluginType(int type){
         try {
-            this.tam = ReflectyPluginManager.getDefault().getReflectyPlugin(type).createTypeAdapterManager();
+            this.plugin = ReflectyPluginManager.getDefault().getReflectyPlugin(type);
+            this.tam = plugin.createTypeAdapterManager();
         }catch (NullPointerException e){
             throw new RuntimeException("you should register reflecty plugin for type = " + type + " first. see @ReflectyPluginManager.");
         }
         return this;
+    }
+
+    /**
+     * easy way to assign plugin type is xml.
+     * @return this
+     * @since 1.0.7
+     */
+    public ReflectyIo xml(){
+        return pluginType(PLUGIN_TYPE_XML);
+    }
+    /**
+     * easy way to assign plugin type is yaml.
+     * @return this
+     * @since 1.0.7
+     */
+    public ReflectyIo yaml(){
+        return pluginType(PLUGIN_TYPE_YAML);
+    }
+    /**
+     * easy way to assign plugin type is json.
+     * @return this
+     * @since 1.0.7
+     */
+    public ReflectyIo json(){
+        return pluginType(PLUGIN_TYPE_JSON);
     }
 
     /**
@@ -196,6 +227,34 @@ public final class ReflectyIo {
     }
 
     /**
+     * write the object by the writer
+     * @param writer1 the writer
+     * @param obj the object to write
+     * @throws IOException if an I/O error occurs.
+     * @since 1.0.7
+     */
+    public void write(Writer writer1, Object obj) throws IOException{
+        if(plugin == null){
+            throw new IllegalStateException("you must call #pluginType() first.");
+        }
+        write(plugin.createReflectyWriter(writer1), obj);
+    }
+
+    /**
+     * write the object by the writer without IOException.
+     * @param writer the writer
+     * @param obj the object to write
+     * @since 1.0.7
+     */
+    public void write2(Writer writer, Object obj){
+        try {
+            write(writer, obj);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * write the object by the writer without IOException.
      * @param writer the writer
      * @param obj the object to write
@@ -231,6 +290,22 @@ public final class ReflectyIo {
     }
 
     /**
+     * read object. for read. you must call {@linkplain #type(Type)} or {@linkplain TypeToken} before this.
+     * @param reader the reader
+     * @param <T> the type you want to read.
+     * @return the object
+     * @throws IOException if an I/O error occurs.
+     * @since 1.0.7
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T read(Reader reader) throws IOException{
+        if(plugin == null){
+            throw new IllegalStateException("you must call #pluginType() first.");
+        }
+        return read(plugin.createReflectyReader(reader));
+    }
+
+    /**
      * read object without IOException. for read. you must call {@linkplain #type(Type)} or {@linkplain TypeToken} before this.
      * @param reader the reader
      * @param <T> the type you want to read.
@@ -239,6 +314,21 @@ public final class ReflectyIo {
      */
     @SuppressWarnings("unchecked")
     public <T> T read2(ReflectyReader reader){
+        try {
+            return read(reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * read object without IOException. for read. you must call {@linkplain #type(Type)} or {@linkplain TypeToken} before this.
+     * @param reader the reader
+     * @param <T> the type you want to read.
+     * @return the object
+     * @since 1.0.7
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T read2(Reader reader){
         try {
             return read(reader);
         } catch (IOException e) {

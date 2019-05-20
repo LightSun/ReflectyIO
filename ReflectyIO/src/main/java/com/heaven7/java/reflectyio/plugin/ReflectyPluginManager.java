@@ -22,7 +22,6 @@ public final class ReflectyPluginManager {
     private ReflectyPluginManager(){}
 
     static {
-        //TODO proguard should care about  'names'
         int[] types = {
                 PLUGIN_TYPE_XML,
                 PLUGIN_TYPE_YAML,

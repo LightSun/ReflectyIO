@@ -57,7 +57,7 @@ public class XmlTest {
                 "</Google>\n";
 
         XmlReader reader = new XmlReader(new StringReader(xml));
-        Object obj = new ReflectyIo().delegate(new XmlReflectyDelegate())
+        Object obj = new ReflectyIo().tam(new XmlTypeAdapterManager())
                 .type(Person.class)
                 .build().read(reader);
         System.out.println(obj);
@@ -78,13 +78,14 @@ public class XmlTest {
         p.setText("fgkfdgfdlg8df89g8fd9g89fd99999999999gklal;l;d;lasd7as7d5asd5as56ddddddas56ddddd5s6ad");
 
         p.setMapListInfo(createMapListInfo());
-        p.setInfoMap2(createInfoMap2());
+       // p.setInfoMap2(createInfoMap2()); // not support this type
 
         testImpl(new TypeToken<Person>(){}, p);
         clean();
     }
 
-    @Test
+    //for xml. only support self-object.
+   /* @Test
     public void testMap()throws Exception{
         Map<String, Info> map = createInfoMap();
         TypeToken<Map<String, Info>> tt = new TypeToken<Map<String, Info>>() {
@@ -98,7 +99,7 @@ public class XmlTest {
         TypeToken<List<Map<String, Integer>>> tt = new TypeToken<List<Map<String, Integer>>>() {
         };
         testImpl(tt, list);
-    }
+    }*/
 
     private Map<Info, String> createInfoMap2() {
         Map<Info, String> map = new HashMap<>();
@@ -118,7 +119,7 @@ public class XmlTest {
     private void testImpl(TypeToken<?> tt, Object raw) throws IOException {
         new ReflectyIo().delegate(new XmlReflectyDelegate())
                 .typeToken(tt)
-                .build().cacheTAM().write(yamlWriter, raw);
+                .build().write(yamlWriter, raw);
         System.out.println(sw.toString());
 
         XmlReader reader = new XmlReader(new StringReader(sw.toString()));

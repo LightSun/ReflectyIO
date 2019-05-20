@@ -36,7 +36,7 @@ import com.heaven7.java.reflectyio.anno.ReflectyMethod;
 public class ReflectyTypeAdapterManager extends AbstractTypeAdapterManager<ReflectyWriter, ReflectyReader>{
 
     private final Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> mReflecty;
-    private final ReflectyEvaluator evaluator;
+    private final ReflectyEvaluator mEvaluator;
 
     public ReflectyTypeAdapterManager(){
         this(new ReflectyBuilder<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit>()
@@ -56,7 +56,7 @@ public class ReflectyTypeAdapterManager extends AbstractTypeAdapterManager<Refle
         Throwables.checkNull(context);
         Throwables.checkNull(evaluator);
         Throwables.checkNull(mReflecty);
-        this.evaluator = evaluator;
+        this.mEvaluator = evaluator;
         this.mReflecty = mReflecty;
         registerCore();
     }
@@ -70,35 +70,53 @@ public class ReflectyTypeAdapterManager extends AbstractTypeAdapterManager<Refle
         registerAdapters(double.class, Double.class);
         registerAdapters(boolean.class, Boolean.class);
 
-        CharAdapter ca = new CharAdapter(evaluator);
+        CharAdapter ca = new CharAdapter(mEvaluator);
         registerBasicTypeAdapter(char.class, ca);
         registerBasicTypeAdapter(Character.class, ca);
 
-        registerBasicTypeAdapter(String.class, new StringAdapter(evaluator));
+        registerBasicTypeAdapter(String.class, new StringAdapter(mEvaluator));
     }
 
     private <T> void registerAdapters(Class<?> base, Class<T> wrap){
-        CommonTypeAdapter<T> byteAdapter = new CommonTypeAdapter<T>(evaluator, wrap);
+        CommonTypeAdapter<T> byteAdapter = new CommonTypeAdapter<T>(mEvaluator, wrap);
         registerBasicTypeAdapter(base, byteAdapter);
         registerBasicTypeAdapter(wrap, byteAdapter);
     }
 
+    /**
+     * get the reflecty
+     * @return the reflecty
+     * @since 1.0.7
+     */
+    public Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> getReflecty(){
+        return mReflecty;
+    }
+
+    /**
+     * get reflecty evaluator
+     * @return the reflecty evaluator
+     * @since 1.0.7
+     */
+    public ReflectyEvaluator getReflectyEvaluator(){
+        return mEvaluator;
+    }
+
     @Override
     public TypeAdapter<ReflectyWriter, ReflectyReader> createCollectionTypeAdapter(Class<?> collectionClass, TypeAdapter<ReflectyWriter, ReflectyReader> componentAdapter) {
-        return new CollectionTypeAdapter(evaluator, getReflectyContext(), collectionClass, componentAdapter);
+        return new CollectionTypeAdapter(mEvaluator, getReflectyContext(), collectionClass, componentAdapter);
     }
     @Override
     public TypeAdapter<ReflectyWriter, ReflectyReader> createArrayTypeAdapter(Class<?> componentClass, TypeAdapter<ReflectyWriter, ReflectyReader> componentAdapter) {
-        return new ArrayTypeAdapter(evaluator, componentClass, componentAdapter);
+        return new ArrayTypeAdapter(mEvaluator, componentClass, componentAdapter);
     }
     @Override
     public TypeAdapter<ReflectyWriter, ReflectyReader> createMapTypeAdapter(Class<?> mapClazz, TypeAdapter<ReflectyWriter, ReflectyReader> keyAdapter,
                                                                             TypeAdapter<ReflectyWriter, ReflectyReader> valueAdapter) {
-        return new MapTypeAdapter(evaluator, getReflectyContext(), mapClazz, keyAdapter, valueAdapter);
+        return new MapTypeAdapter(mEvaluator, getReflectyContext(), mapClazz, keyAdapter, valueAdapter);
     }
 
     @Override
     public TypeAdapter<ReflectyWriter, ReflectyReader> createObjectTypeAdapter(Class<?> objectClazz, float applyVersion) {
-        return new ObjectTypeAdapter(evaluator, mReflecty, this, objectClazz, applyVersion);
+        return new ObjectTypeAdapter(mEvaluator, mReflecty, this, objectClazz, applyVersion);
     }
 }

@@ -14,24 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.heaven7.java.xml;
+package com.heaven7.java.reflectyio.plugin;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.heaven7.java.reflecty.iota.ITypeAdapterManager;
+import com.heaven7.java.reflectyio.ReflectyReader;
+import com.heaven7.java.reflectyio.ReflectyWriter;
+import com.heaven7.java.xml.XmlTypeAdapterManager;
 
 /**
- * indicate the xml element name of class/field/method.
+ * the xml plugin
  * @author heaven7
  */
-@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface XmlElement {
-
-    /**
-     * indicate the element name which will used to serialize.
-     * @return the name
-     */
-    String value();
+public class XmlReflectyPlugin implements ReflectyPlugin {
+    @Override
+    public ITypeAdapterManager<ReflectyWriter, ReflectyReader> createTypeAdapterManager() {
+        return new XmlTypeAdapterManager();
+    }
 }

@@ -73,12 +73,12 @@ public class XmlReader implements ReflectyReader {
     }
 
     @Override
-    public void skipValue()  throws IOException {
+    public void skipValue() throws IOException {
         mCurrent = null;
     }
 
     @Override
-    public boolean hasNext()  throws IOException {
+    public boolean hasNext() throws IOException {
         if(mCurrent == null ){
             mCurrent = mParent.nextChild();
         }

@@ -23,6 +23,10 @@ import com.heaven7.java.reflectyio.ReflectyWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+/**
+ * the xml body proxy.
+ * @author heaven7
+ */
 /*public*/ class XmlBodyProxy extends XmlFieldProxy implements Commissioner{
 
     public XmlBodyProxy(Class<?> ownerClass, Field field, String property) {
@@ -42,6 +46,7 @@ import java.lang.reflect.Field;
         XmlReader xr = (XmlReader) source;
         try {
             setValue(receiver,  xr.readBodyText());
+            xr.skipValue();
         } catch (IllegalAccessException e) {
             throw new XmlException(e);
         }
