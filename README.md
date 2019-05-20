@@ -46,6 +46,16 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 - 5, @ReflectyInherit 用于是否暴露给子类的。
 - 6, @Since和@Until 用于版本号的兼容
   - ps: 你可能会想。如果我的某字段不想被序列化。嘿嘿，那么加transient修饰符就可以了.
+  
+- 7, 如果是xml.
+  - @XmlBody用于指定将指定的field的值。记为xml元素的body.
+  - @XmlElement 用于指定将自定义对象 和 简单的泛型嵌套指定元素名称。详情请见demo. Person类的.
+  ```java
+   @XmlElement("list_map")
+    private List<Map<String, Integer>> listMap; //用注解，映射child element name.
+  ```
+    - 将注释的 //System.out.println(mWriter.toString()); 打开即可
+       
 
 ## 优缺点
 - 优势：
