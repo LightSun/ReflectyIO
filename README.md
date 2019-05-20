@@ -34,7 +34,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
   - 2, 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
   
 - 劣势：
-  - 1, 关于json的序列化和解析，我是偷懒的。直接用的Gson库的JsonWriter和JsonReader.
+  - 1, 解析xml, json.yaml都是直接读取到整个内存，所以如果数据量太大则不适合。
   - 2, 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象。不能是集合类型。
   
 ## 使用步骤
