@@ -45,6 +45,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 - 4, @ReflectyMethodType 用于指定方法使用的类型，get或者set. 
 - 5, @ReflectyInherit 用于是否暴露给子类的。
 - 6, @Since和@Until 用于版本号的兼容
+  ps: 你可能会想。如果我的某字段不想被序列化。嘿嘿，那么加transient修饰符就可以了.
 
 ## 优缺点
 - 优势：
