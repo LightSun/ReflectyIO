@@ -29,14 +29,14 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile 'com.heaven7.java.reflectyio:ReflectyIo:1.0.5'
+    compile 'com.heaven7.java.reflectyio:ReflectyIo:1.0.7'
 }
 
 publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.yaml'
     artifactId = 'Yaml'
-    publishVersion = '1.0.0'
-    desc = 'this is a framework which user to serialize, deserialize "yaml" data.'
+    publishVersion = '1.0.1'
+    desc = 'this is a lib which user to serialize, deserialize "yaml" data.'
     website = 'https://github.com/LightSun/ReflectyIO'
 }

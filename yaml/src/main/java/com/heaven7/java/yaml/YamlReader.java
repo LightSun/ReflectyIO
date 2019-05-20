@@ -135,13 +135,16 @@ public class YamlReader implements ReflectyReader {
         lines.removeIf(new Predicate<String>() {
             @Override
             public boolean test(String s) {
-                return s.trim().isEmpty();
+                String trim = s.trim();
+                return trim.isEmpty() || trim.startsWith("#");
             }
         });
         for (int i = 0, len = lines.size(); i < len ; i ++) {
             YamlLine yl = YamlLine.parse(lines.get(i));
-            yl.index = i;
-            yls.add(yl);
+            if(yl != null) {
+                yl.index = i;
+                yls.add(yl);
+            }
         }
         List<YamlLine> list = new ArrayList<>(yls);
         /*

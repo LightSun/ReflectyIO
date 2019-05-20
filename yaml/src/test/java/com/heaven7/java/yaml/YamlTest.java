@@ -59,7 +59,7 @@ public class YamlTest {
     private void testImpl(TypeToken<?> tt, Object raw) throws IOException {
         new ReflectyIo().delegate(new SimpleReflectyDelegate())
                 .typeToken(tt)
-                .build().cacheTAM().write(yamlWriter, raw);
+                .build().write(yamlWriter, raw);
         System.out.println(sw.toString());
 
         YamlReader reader = new YamlReader(new StringReader(sw.toString()));
