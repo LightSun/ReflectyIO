@@ -126,13 +126,6 @@ public class PluginTest {
         testXml(new TypeToken<Person>(){}, p);
     }
 
-    private Map<String, List<Info>> createMapListInfo() {
-        Map<String, List<Info>> map = new HashMap<>();
-        map.put("key1", Arrays.asList(createInfo()));
-        map.put("key2", Arrays.asList(createInfo(), createInfo(), createInfo()));
-        return map;
-    }
-
     private void testXml(TypeToken<?> tt, Object raw) throws IOException {
         new ReflectyIo()
                 .xml()
@@ -185,60 +178,11 @@ public class PluginTest {
         Assert.assertEquals(obj, raw);
     }
 
-    private Map<String, Info> createInfoMap() {
-        Map<String, Info> map = new HashMap<>();
-        map.put("info1", createInfo());
-        map.put("info2", createInfo());
-        map.put("info3", createInfo());
-        return map;
-    }
-
-    private List<Info> createInfoList() {
-        return new ArrayList<>(Arrays.asList(createInfo(), createInfo()));
-    }
-
-    private Info createInfo() {
-        Info info = new Info();
-        info.setAddr("addr1");
-        info.setPhone("12345");
-        return info;
-    }
-    private Info createInfo(int index) {
-        Info info = new Info();
-        info.setAddr("addr__" + index);
-        info.setPhone("phone__" + index);
-        return info;
-    }
-
-    private List<Map<String, Integer>> createListMap() {
-        List<Map<String, Integer>> list = new ArrayList<>();
-        list.add(createMap());
-        list.add(createMap());
-        return list;
-    }
-
-    private Map<String, List<Integer>> createMapList() {
-        Map<String, List<Integer>> map = new HashMap<>();
-        map.put("h1", Arrays.asList(1,2,3));
-        map.put("h2", Arrays.asList(4,5,6));
-        return map;
-    }
-
-    private Map<String, Integer> createMap() {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("h1", 1);
-        map.put("h2", 2);
-        map.put("h3", 3);
-        return map;
-    }
-
-    private List<String> createList() {
-        return new ArrayList<>(Arrays.asList("h123", "h456", "h789"));
-    }
+    ... 此处省略各种对象的创建。。。
 }
 
 ```
-- 3, 更多详细[点击此处]()
+- 3, 更多详细[点击此处](https://github.com/LightSun/ReflectyIO/blob/master/ReflectyIO/src/test/java/com/heaven7/java/reflectyio/PluginTest.java)
   
 ## 混淆
 ```java
