@@ -32,6 +32,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 - 优势：
   - 1, 统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
   - 2, 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
+    - 感兴趣的可以看 ReflectyDelegate, ReflectyContext, ReflectyPlugin等接口
   
 - 劣势：
   - 1, 解析xml, json.yaml都是直接读取到整个内存，所以如果数据量太大则不适合。
