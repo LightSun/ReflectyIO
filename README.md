@@ -38,7 +38,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 ```
 
 ## 注解使用详解
-- 1, @ReflectyClass 用于指定对象的类型适配器. 类似于Gson的TypeAdapter
+- 1, @ReflectyClass 用于指定对象的类型适配器. 作用类似于Gson的JsonAdapter.
 - 2, @ReflectyField 用于指定字段field序列化和反序列化的key
 - 3, @ReflectyMethod 用于指定序列化和反序列化Method对象的key。
   - ps: 需要注意的是，方法必须是配套的(get 和set).
