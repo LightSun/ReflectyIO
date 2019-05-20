@@ -23,6 +23,7 @@ import com.heaven7.java.reflectyio.anno.ReflectyClass;
 import com.heaven7.java.reflectyio.anno.ReflectyField;
 import com.heaven7.java.reflectyio.anno.ReflectyInherit;
 import com.heaven7.java.reflectyio.anno.ReflectyMethod;
+import com.heaven7.java.reflectyio.plugin.ReflectyPluginManager;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -32,8 +33,6 @@ import java.lang.reflect.Type;
  * @author heaven7
  */
 public final class ReflectyIo {
-
-    private static volatile ITypeAdapterManager<ReflectyWriter, ReflectyReader> sTAM;
 
     private ReflectyEvaluator evaluator;
     private ReflectyContext context;
@@ -72,13 +71,18 @@ public final class ReflectyIo {
         return this;
     }
 
-    public ReflectyIo cacheTAM(){
-        buildTamInternal();
-        sTAM = this.tam;
-        return this;
-    }
-    public ReflectyIo useCacheTAM(){
-        this.tam = sTAM;
+    /**
+     * assign the plugin to create {@linkplain ITypeAdapterManager}.
+     * @param type the type
+     * @return this
+     * @since 1.0.6
+     */
+    public ReflectyIo pluginType(int type){
+        try {
+            this.tam = ReflectyPluginManager.getDefault().getReflectyPlugin(type).createTypeAdapterManager();
+        }catch (NullPointerException e){
+            throw new RuntimeException("you should register reflecty plugin for type = " + type + " first. see @ReflectyPluginManager.");
+        }
         return this;
     }
 
