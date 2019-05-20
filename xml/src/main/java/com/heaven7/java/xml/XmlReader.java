@@ -26,7 +26,7 @@ import java.io.Reader;
  * the xml reader
  * @author heaven7
  */
-public class XmlReader implements ReflectyReader {
+public final class XmlReader implements ReflectyReader {
 
     private final XmlTree mRoot;
     private Tree mParent;

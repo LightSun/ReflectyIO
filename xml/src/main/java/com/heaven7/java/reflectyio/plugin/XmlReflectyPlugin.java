@@ -19,15 +19,28 @@ package com.heaven7.java.reflectyio.plugin;
 import com.heaven7.java.reflecty.iota.ITypeAdapterManager;
 import com.heaven7.java.reflectyio.ReflectyReader;
 import com.heaven7.java.reflectyio.ReflectyWriter;
+import com.heaven7.java.xml.XmlReader;
 import com.heaven7.java.xml.XmlTypeAdapterManager;
+import com.heaven7.java.xml.XmlWriter;
+
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * the xml plugin
  * @author heaven7
  */
-public class XmlReflectyPlugin implements ReflectyPlugin {
+public final class XmlReflectyPlugin implements ReflectyPlugin {
     @Override
     public ITypeAdapterManager<ReflectyWriter, ReflectyReader> createTypeAdapterManager() {
         return new XmlTypeAdapterManager();
+    }
+    @Override
+    public ReflectyWriter createReflectyWriter(Writer writer) {
+        return new XmlWriter(writer);
+    }
+    @Override
+    public ReflectyReader createReflectyReader(Reader reader) {
+        return new XmlReader(reader);
     }
 }
