@@ -4,7 +4,7 @@
 ## 特征
 - 1, 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
 - 2, 支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
-甚至不继承collection的集合，以及不实现map接口的map. 
+甚至不实现collection的collection，以及不实现map接口的map. 
 - 3, 标准化调用接口。使用非常简单。
   - 比如写json.
   ```java
