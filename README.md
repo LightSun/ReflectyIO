@@ -43,6 +43,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
   - 2, 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
     - 感兴趣的可以看 ReflectyDelegate, ReflectyContext, ReflectyPlugin等接口
   - 3, 支持自定义数据关于版本号的兼容.  
+  - 4, 虽然我用的gson来处理json数据。可泛型数据类型支持比Gson更好。
   
 - 劣势：
   - 1, 解析xml, json.yaml都是直接读取到整个内存，所以如果数据量太大则不适合。
