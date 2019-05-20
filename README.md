@@ -37,6 +37,15 @@ new ReflectyIo()
 ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlugin plugin);
 ```
 
+## 注解使用详解
+- 1, @ReflectyClass 用于指定对象的类型适配器. 类似于Gson的TypeAdapter
+- 2, @ReflectyField 用于指定字段field序列化和反序列化的key
+- 3, @ReflectyMethod 用于指定序列化和反序列化Method对象的key。
+  - ps: 需要注意的是，方法必须是配套的(get 和set).
+- 4, @ReflectyMethodType 用于指定方法使用的类型，get或者set. 
+- 5, @ReflectyInherit 用于是否暴露给子类的。
+- 6, @Since和@Until 用于版本号的兼容
+
 ## 优缺点
 - 优势：
   - 1, 统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
