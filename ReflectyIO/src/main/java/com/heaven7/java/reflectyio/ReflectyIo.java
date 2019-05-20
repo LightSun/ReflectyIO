@@ -34,6 +34,10 @@ import java.lang.reflect.Type;
  */
 public final class ReflectyIo {
 
+    public static final int PLUGIN_TYPE_XML   = 1;
+    public static final int PLUGIN_TYPE_YAML  = 2;
+    public static final int PLUGIN_TYPE_JSON  = 3;
+
     private ReflectyEvaluator evaluator;
     private ReflectyContext context;
     private Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> reflecty;
@@ -44,18 +48,41 @@ public final class ReflectyIo {
 
     private TypeAdapter<ReflectyWriter, ReflectyReader> adapter;
 
+    /**
+     * set the Reflecty Evaluator
+     * @param evaluator the Reflecty Evaluator
+     * @return this
+     */
     public ReflectyIo evaluator(ReflectyEvaluator evaluator) {
         this.evaluator = evaluator;
         return this;
     }
+
+    /**
+     * set the reflecty context
+     * @param context the reflecty context
+     * @return this
+     */
     public ReflectyIo context(ReflectyContext context) {
         this.context = context;
         return this;
     }
+
+    /**
+     * set the reflecty
+     * @param reflecty the reflecty
+     * @return this
+     */
     public ReflectyIo reflecty(Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> reflecty) {
         this.reflecty = reflecty;
         return this;
     }
+
+    /**
+     * set the reflecty delegate
+     * @param delegate the delegate
+     * @return this
+     */
     public ReflectyIo delegate(ReflectyDelegate<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> delegate) {
         this.reflecty = new ReflectyBuilder<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit>()
                 .classAnnotation(ReflectyClass.class)
@@ -66,6 +93,12 @@ public final class ReflectyIo {
                 .build();
         return this;
     }
+
+    /**
+     * set the type adapter manager.
+     * @param tam the type adapter manager
+     * @return this
+     */
     public ReflectyIo tam(ITypeAdapterManager<ReflectyWriter, ReflectyReader> tam) {
         this.tam = tam;
         return this;
@@ -86,14 +119,37 @@ public final class ReflectyIo {
         return this;
     }
 
+    /**
+     * assign the type which used to write or read object.
+     * <p>for read you must call this. that means you should call this method or {@linkplain #typeToken(TypeToken)} before {@linkplain #read(ReflectyReader)}.</p>
+     * <p>for write. if the object is not generic. you can just ignore call this method and  {@linkplain #typeToken(TypeToken)}. or else you
+     * must call this method or {@linkplain #typeToken(TypeToken)} before {@linkplain #read(ReflectyReader)}. </p>
+     * @param type the type.
+     * @return this
+     */
     public ReflectyIo type(Type type){
         this.type = type;
         return this;
     }
+
+    /**
+     * assign the type which used to write or read object.
+     * <p>for read you must call this. that means you should call this method or {@linkplain #type(Type)} before {@linkplain #read(ReflectyReader)}.</p>
+     * <p>for write. if the object is not generic. you can just ignore call this method and  {@linkplain #type(Type)} . or else you
+     * must call this method or {@linkplain #type(Type)}  before {@linkplain #read(ReflectyReader)}. </p>
+     * @param tt the type token.
+     * @return this
+     */
     public ReflectyIo typeToken(TypeToken<?> tt){
         this.type = tt.getType();
         return this;
     }
+
+    /**
+     * set the version which can used to do with object-compat.
+     * @param version the version
+     * @return this
+     */
     public ReflectyIo version(float version){
         this.version = version;
         if(version <= 0 ){
@@ -101,6 +157,11 @@ public final class ReflectyIo {
         }
         return this;
     }
+
+    /**
+     * build type adapter. this often called before {@linkplain #write(ReflectyWriter, Object)} and {@linkplain #read(ReflectyReader)}.
+     * @return this
+     */
     public ReflectyIo build(){
         buildTamInternal();
         if(type != null){
@@ -109,6 +170,12 @@ public final class ReflectyIo {
         return this;
     }
 
+    /**
+     * write the object by the writer
+     * @param writer the writer
+     * @param obj the object to write
+     * @throws IOException if an I/O error occurs.
+     */
     public void write(ReflectyWriter writer, Object obj) throws IOException{
         if(tam == null){
             throw new IllegalStateException("you must call method '#build()' first.");
@@ -127,6 +194,28 @@ public final class ReflectyIo {
         writer.end(obj);
         writer.flush();
     }
+
+    /**
+     * write the object by the writer without IOException.
+     * @param writer the writer
+     * @param obj the object to write
+     * @since 1.0.6
+     */
+    public void write2(ReflectyWriter writer, Object obj){
+        try {
+            write(writer, obj);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * read object. for read. you must call {@linkplain #type(Type)} or {@linkplain TypeToken} before this.
+     * @param reader the reader
+     * @param <T> the type you want to read.
+     * @return the object
+     * @throws IOException if an I/O error occurs.
+     */
     @SuppressWarnings("unchecked")
     public <T> T read(ReflectyReader reader) throws IOException{
         if(tam == null){
@@ -141,6 +230,21 @@ public final class ReflectyIo {
         return result;
     }
 
+    /**
+     * read object without IOException. for read. you must call {@linkplain #type(Type)} or {@linkplain TypeToken} before this.
+     * @param reader the reader
+     * @param <T> the type you want to read.
+     * @return the object
+     * @since 1.0.6
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T read2(ReflectyReader reader){
+        try {
+            return read(reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void buildTamInternal() {
         if(tam == null){

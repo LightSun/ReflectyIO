@@ -3,6 +3,10 @@ package com.heaven7.java.reflectyio.plugin;
 import com.heaven7.java.base.util.SparseArrayDelegate;
 import com.heaven7.java.base.util.SparseFactory;
 
+import static com.heaven7.java.reflectyio.ReflectyIo.PLUGIN_TYPE_JSON;
+import static com.heaven7.java.reflectyio.ReflectyIo.PLUGIN_TYPE_XML;
+import static com.heaven7.java.reflectyio.ReflectyIo.PLUGIN_TYPE_YAML;
+
 /**
  * the reflecty plugin manager
  * @author heaven7
@@ -16,6 +20,28 @@ public final class ReflectyPluginManager {
         static final ReflectyPluginManager INSTANCE = new ReflectyPluginManager();
     }
     private ReflectyPluginManager(){}
+
+    static {
+        //TODO proguard should care about  'names'
+        int[] types = {
+                PLUGIN_TYPE_XML,
+                PLUGIN_TYPE_YAML,
+                PLUGIN_TYPE_JSON,
+        };
+        String[] names = {
+                "com.heaven7.java.reflectyio.plugin.XmlReflectyPlugin",
+                "com.heaven7.java.reflectyio.plugin.YamlReflectyPlugin",
+                "com.heaven7.java.reflectyio.plugin.JsonReflectyPlugin"
+        };
+        for (int i = 0 , size = types.length ; i < size ; i ++){
+            try {
+                ReflectyPlugin rp = (ReflectyPlugin) Class.forName(names[i]).newInstance();
+                getDefault().registerReflectyPlugin(types[i], rp);
+            }catch (Exception e){
+                //ignore
+            }
+        }
+    }
 
     /**
      * get the default plugin manager

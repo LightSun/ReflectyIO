@@ -33,7 +33,7 @@ import com.heaven7.java.reflectyio.anno.ReflectyMethod;
 /**
  * @author  heaven7
  */
-public final class ReflectyTypeAdapterManager extends AbstractTypeAdapterManager<ReflectyWriter, ReflectyReader>{
+public class ReflectyTypeAdapterManager extends AbstractTypeAdapterManager<ReflectyWriter, ReflectyReader>{
 
     private final Reflecty<TypeAdapter<ReflectyWriter, ReflectyReader>, ReflectyClass, ReflectyField, ReflectyMethod, ReflectyInherit> mReflecty;
     private final ReflectyEvaluator evaluator;
