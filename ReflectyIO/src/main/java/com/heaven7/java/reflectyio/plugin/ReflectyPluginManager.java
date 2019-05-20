@@ -51,7 +51,8 @@ public final class ReflectyPluginManager {
     }
 
     /**
-     * register the reflecty plugin
+     * register the reflecty plugin. the built-in plugin types are {@linkplain com.heaven7.java.reflectyio.ReflectyIo#PLUGIN_TYPE_XML},
+     * {@linkplain com.heaven7.java.reflectyio.ReflectyIo#PLUGIN_TYPE_YAML} and {@linkplain com.heaven7.java.reflectyio.ReflectyIo#PLUGIN_TYPE_JSON}.
      * @param type the type
      * @param plugin the reflecty plugin
      */
