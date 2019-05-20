@@ -193,7 +193,8 @@ public class PluginTest {
 ## 感谢
 - [Google/Gson](https://github.com/google/gson). 设计思想来源于Gson而且json序列化和反序列化用的gson.
 - [libgdx/libgdx](https://github.com/libgdx/libgdx) 非常优秀的开源游戏引擎，关于xml的序列化和反序列化来源于此。
-
+- [LightSun/Reflecty](https://github.com/LightSun/Reflecty) 非常优秀的反射和数据的输入输出框架。这是一个框架的框架。
+基本全是接口。
   
  ## License
 
