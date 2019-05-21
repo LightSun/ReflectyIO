@@ -2,10 +2,10 @@
 这是一个序列化和反序列化数据的一个框架。支持任意数据格式的扩展(以插件的形式)。
 
 ## 特征
-- 1, 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
-- 2, 支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
+- 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
+- 支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
 甚至不实现collection的collection，以及不实现map接口的map. 
-- 3, 标准化调用接口。使用非常简单。
+- 标准化调用接口。使用非常简单。
   - 比如写json.
   ```java
   new ReflectyIo().json()
@@ -22,7 +22,7 @@
                   .read(new StringReader(mWriter.toString()));
   ```
    - xml, yaml 数据同理
-- 4, 支持自定义对象关于版本号的兼容。 通过注解@Since, @Until和使用ReflectyIo时指定版本。
+- 支持自定义对象关于版本号的兼容。 通过注解@Since, @Until和使用ReflectyIo时指定版本。
 ```java
 new ReflectyIo()
                 .xml()
@@ -31,23 +31,23 @@ new ReflectyIo()
                 .build()
                 .write(mWriter, raw);
 ```
-- 5, 内置可选3种数据的序列化和反序列化。即json,yaml,xml
-- 6, 支持自行扩展插件。核心方法如下:
+- 内置可选3种数据的序列化和反序列化。即json,yaml,xml
+- 支持自行扩展插件。核心方法如下:
 ```java
 ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlugin plugin);
 ```
 
 ## 注解使用详解
-- 1, @ReflectyClass 用于指定对象的类型适配器. 作用类似于Gson的JsonAdapter.
-- 2, @ReflectyField 用于指定字段field序列化和反序列化的key
-- 3, @ReflectyMethod 用于指定序列化和反序列化Method对象的key。
+- @ReflectyClass 用于指定对象的类型适配器. 作用类似于Gson的JsonAdapter.
+- @ReflectyField 用于指定字段field序列化和反序列化的key
+- @ReflectyMethod 用于指定序列化和反序列化Method对象的key。
   - ps: 需要注意的是，方法必须是配套的(get 和set).
-- 4, @ReflectyMethodType 用于指定方法使用的类型，get或者set. 
-- 5, @ReflectyInherit 用于是否暴露给子类的。
-- 6, @Since和@Until 用于版本号的兼容
+- @ReflectyMethodType 用于指定方法使用的类型，get或者set. 
+- @ReflectyInherit 用于是否暴露给子类的。
+- @Since和@Until 用于版本号的兼容
   - ps: 你可能会想。如果我的某字段不想被序列化。嘿嘿，那么加transient修饰符就可以了.
   
-- 7, 如果是xml.
+- 如果是xml.
   - @XmlBody用于指定将指定的field的值。记为xml元素的body.
   - @XmlElement 用于指定将自定义对象 和 简单的泛型嵌套指定元素名称。详情请见demo. Person类的.
   ```java
