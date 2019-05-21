@@ -68,7 +68,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
   
 - 劣势：
   - 解析xml, json.yaml都是直接读取到整个内存，所以如果数据量太大则不适合。
-  - 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象。不能是集合类型。
+  - 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象(不能是集合类型)。
   
 ## 使用步骤
 - 1, gradle配置(其中版本号可根据release版本修改).android平台将compile改为implementation即可。
