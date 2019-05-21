@@ -59,15 +59,15 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 
 ## 优缺点
 - 优势：
-  - 1, 统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
-  - 2, 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
+  - 统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
+  - 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
     - 感兴趣的可以看 ReflectyDelegate, ReflectyContext, ReflectyPlugin等接口
-  - 3, 支持自定义数据关于版本号的兼容.  
-  - 4, 虽然我用的gson来处理json数据。可泛型数据类型支持比Gson更好。
+  - 支持自定义数据关于版本号的兼容.  
+  - 虽然我用的gson来处理json数据。可泛型数据类型支持比Gson更好(无需动态注册)。
   
 - 劣势：
-  - 1, 解析xml, json.yaml都是直接读取到整个内存，所以如果数据量太大则不适合。
-  - 2, 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象。不能是集合类型。
+  - 解析xml, json.yaml都是直接读取到整个内存，所以如果数据量太大则不适合。
+  - 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象。不能是集合类型。
   
 ## 使用步骤
 - 1, gradle配置(其中版本号可根据release版本修改).android平台将compile改为implementation即可。
