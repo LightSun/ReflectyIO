@@ -116,12 +116,7 @@ public final class ReflectyIo {
      * @since 1.0.6
      */
     public ReflectyIo pluginType(int type){
-        try {
-            this.plugin = ReflectyPluginManager.getDefault().getReflectyPlugin(type);
-            this.tam = plugin.createTypeAdapterManager();
-        }catch (NullPointerException e){
-            throw new RuntimeException("you should register reflecty plugin for type = " + type + " first. see @ReflectyPluginManager.");
-        }
+        this.plugin = ReflectyPluginManager.getDefault().getReflectyPlugin(type);
         return this;
     }
 
@@ -198,6 +193,31 @@ public final class ReflectyIo {
         if(type != null){
             adapter = TypeAdapter.ofType(type, tam, version);
         }
+        return this;
+    }
+
+    /**
+     * register the type adapter. this method must be called after {@linkplain #build()} or else must cause {@linkplain NullPointerException}.
+     * @param type the type
+     * @param version the version which used for compat . default will set to 1.0f.
+     * @param adapter the type adapter you want
+     * @return this
+     * @since 1.0.8
+     */
+    public ReflectyIo registerTypeAdapter(Type type, float version, TypeAdapter<ReflectyWriter, ReflectyReader> adapter){
+        tam.registerTypeAdapter(type, version, adapter);
+        return this;
+    }
+    /**
+     * register the type adapter. and use the default version which is from {@linkplain #version(float)}. if not set default is 1.0f.
+     * this method must be called after {@linkplain #build()} or else must cause {@linkplain NullPointerException}.
+     * @param type the type
+     * @param adapter the type adapter you want
+     * @return this
+     * @since 1.0.8
+     */
+    public ReflectyIo registerTypeAdapter(Type type, TypeAdapter<ReflectyWriter, ReflectyReader> adapter){
+        tam.registerTypeAdapter(type, version, adapter);
         return this;
     }
 
@@ -337,6 +357,9 @@ public final class ReflectyIo {
     }
 
     private void buildTamInternal() {
+        if(plugin != null){
+            tam = plugin.createTypeAdapterManager();
+        }
         if(tam == null){
             if(reflecty == null){
                 throw new IllegalStateException("reflecty can't be null.");
