@@ -32,6 +32,7 @@ new ReflectyIo()
                 .write(mWriter, raw);
 ```
 - 内置可选3种数据的序列化和反序列化。即json,yaml,xml
+- 支持动态注册TypeAdapter和静态注册（注解）.
 - 支持自行扩展插件。核心方法如下:
 ```java
 ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlugin plugin);
