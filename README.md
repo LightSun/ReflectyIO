@@ -54,7 +54,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
    @XmlElement("list_map")
     private List<Map<String, Integer>> listMap; //用注解，映射child element name.
   ```
-    - 将注释的 //System.out.println(mWriter.toString()); 打开即可
+    - 将demo注释的 //System.out.println(mWriter.toString()); 打开即可
        
 
 ## 优缺点
