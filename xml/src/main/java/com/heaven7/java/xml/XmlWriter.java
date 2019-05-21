@@ -223,6 +223,8 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
         }
         if(xe != null){
             mElementName = xe.value();
+        }else { //
+            mElementName = defineClass.getSimpleName();
         }
     }
 

@@ -25,21 +25,12 @@ import com.heaven7.java.reflectyio.anno.ReflectyMethod;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 /**
  * the xml reflecty delegate
  * @author heaven7
  */
 /*public*/ class XmlReflectyDelegate extends SimpleReflectyDelegate{
-
-    @Override
-    public boolean shouldIncludeField(Field field, ReflectyField fieldAnno, boolean isInherit) {
-        if((field.getModifiers() & Modifier.TRANSIENT) == Modifier.TRANSIENT){
-            return false;
-        }
-        return super.shouldIncludeField(field, fieldAnno, isInherit);
-    }
 
     @Override
     public FieldProxy createFieldProxy(Class<?> owner, ReflectyClass classDesc, Field field, String property, ReflectyField fn) {
