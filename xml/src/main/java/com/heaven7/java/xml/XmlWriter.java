@@ -235,7 +235,7 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
 
     @Override
     public void beginWriteMemberProxy(ReflectyContext context, MemberProxy proxy) {
-        System.out.println(proxy.getPropertyName());
+        //System.out.println(proxy.getPropertyName());
         try {
             XmlMemberProxy mProxy = (XmlMemberProxy) proxy;
             mProxy.beginElement(this);
