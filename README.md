@@ -5,6 +5,7 @@
 - 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
 - 支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
 甚至不实现collection的collection，以及不实现map接口的map. 
+- 支持针对method的序列化, 类似于field但是略微不同的是。 关于method的序列化必须是成对(like get with set)的出现。
 - 标准化调用接口。使用非常简单。
   - 比如写json.
   ```java
@@ -61,6 +62,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 ## 优缺点
 - 优势：
   - 统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
+  - 支持针对method的序列化和反序列化。
   - 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
     - 感兴趣的可以看 ReflectyDelegate, ReflectyContext, ReflectyPlugin等接口
   - 支持自定义数据关于版本号的兼容.  
