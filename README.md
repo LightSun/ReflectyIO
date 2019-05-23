@@ -68,7 +68,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
   
 - 劣势：
   - 解析xml, json.yaml都是直接读取到整个内存，所以如果数据量太大则不适合。
-  - 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象。不能是集合类型。
+  - 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象(不能是集合类型)。
   
 ## 使用步骤
 - 1, gradle配置(其中版本号可根据release版本修改).android平台将compile改为implementation即可。
@@ -81,21 +81,20 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
     compile "com.heaven7.java.json:Json:1.0.0" //json 数据格式支持
 ```
 - 2, 配置完成后即可快速开始。
-  - 写数据
+
   ```java
-  new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build()
-                .write(mWriter, obj);
-  ```
-  - 读数据
-  ```java
-   Object obj = new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+  Info info = new Info();
+        info.setAddr("addr1");
+        info.setPhone("12345");
+
+        ReflectyIo io = new ReflectyIo().yaml()
+                .type(Info.class)
+                .build();
+        StringWriter writer = new StringWriter();
+        io.write2(writer, info); //写数据
+
+        Object obj = io.read2(new StringReader(writer.toString())); //读数据
+        Assert.assertEquals(info, obj);
   ```
 ## 完整的demo
 - 1, 定义数据结构
@@ -160,52 +159,40 @@ public class PluginTest {
     }
 
     private void testXml(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
+        ReflectyIo reflectyIo = new ReflectyIo()
                 .xml()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .xml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+        
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
     }
     private void testJson(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
+        ReflectyIo reflectyIo = new ReflectyIo()
                 .json()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .json()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+        
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
     }
     private void testYaml(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
+        ReflectyIo reflectyIo = new ReflectyIo()
                 .yaml()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+       
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
