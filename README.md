@@ -71,16 +71,16 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
   - 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象(不能是集合类型)。
   
 ## 使用步骤
-- 1, gradle配置(其中版本号可根据release版本修改).android平台将compile改为implementation即可。
+- gradle配置(其中版本号可根据release版本修改).android平台将compile改为implementation即可。
 ```java
     //主库
     compile "com.heaven7.java.reflectyio:ReflectyIo:1.0.7"
     //可选依赖库。
-    compile "com.heaven7.java.xml:Xml:1.0.0"   //xml 数据格式支持
+    compile "com.heaven7.java.xml:Xml:1.0.1"   //xml 数据格式支持
     compile "com.heaven7.java.yaml:Yaml:1.0.1" //yaml 数据格式支持
     compile "com.heaven7.java.json:Json:1.0.0" //json 数据格式支持
 ```
-- 2, 配置完成后即可快速开始。
+- 配置完成后即可快速开始。 
 
   ```java
   Info info = new Info();
@@ -96,6 +96,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
         Object obj = io.read2(new StringReader(writer.toString())); //读数据
         Assert.assertEquals(info, obj);
   ```
+ - [简单示例](https://www.jianshu.com/p/be1564f32913)
 ## 完整的demo
 - 1, 定义数据结构
 ```java
