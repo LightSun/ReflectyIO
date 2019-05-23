@@ -37,7 +37,6 @@ public class Info {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(addr, phone);
     }
 }

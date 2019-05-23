@@ -1,7 +1,9 @@
 package com.heaven7.java.reflectyio;
 
+import com.google.gson.stream.JsonWriter;
 import com.heaven7.java.reflecty.TypeToken;
 import com.heaven7.java.reflectyio.entity.Info;
+import com.heaven7.java.reflectyio.entity.MediaEntity;
 import com.heaven7.java.reflectyio.entity.Person;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,14 +28,33 @@ public class PluginTest {
         info.setAddr("addr1");
         info.setPhone("12345");
 
-        ReflectyIo io = new ReflectyIo().yaml()
+        ReflectyIo io = new ReflectyIo()
+                .yaml()
                 .type(Info.class)
                 .build();
         StringWriter writer = new StringWriter();
         io.write2(writer, info);
 
+        System.out.println(writer.toString());
         Object obj = io.read2(new StringReader(writer.toString()));
         Assert.assertEquals(info, obj);
+    }
+
+    @Test
+    public void testMethod() throws IOException{
+      /*  MediaEntity me = new MediaEntity();
+        me.setTimes(new long[]{5, 199});
+
+        ReflectyIo io = new ReflectyIo()
+                .yaml()
+                .type(MediaEntity.class)
+                .build();
+        StringWriter writer = new StringWriter();
+        io.write2(writer, me);
+
+        System.out.println(writer.toString());
+        Object obj = io.read2(new StringReader(writer.toString()));
+        Assert.assertEquals(me, obj);*/
     }
 
     @Test

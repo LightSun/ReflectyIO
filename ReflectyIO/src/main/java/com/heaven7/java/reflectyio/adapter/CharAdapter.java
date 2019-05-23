@@ -47,7 +47,12 @@ public class CharAdapter extends AbstractBasicTypeAdapter{
     public Object read(ReflectyReader source) throws IOException {
         String str = source.nextString();
         if(str != null){
-            return (char) Integer.parseInt(str);
+            //char may be an int or actually char. like 'a'
+            try {
+                return (char) Integer.parseInt(str);
+            }catch (NumberFormatException e){
+                return str.charAt(0);
+            }
         }
         return null;
     }

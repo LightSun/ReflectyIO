@@ -17,7 +17,9 @@
 package com.heaven7.java.reflectyio.adapter;
 
 
+import com.heaven7.java.reflecty.MemberProxy;
 import com.heaven7.java.reflecty.iota.TypeAdapter;
+import com.heaven7.java.reflecty.member.BaseMemberProxy;
 import com.heaven7.java.reflectyio.ReflectyEvaluator;
 import com.heaven7.java.reflectyio.ReflectyReader;
 import com.heaven7.java.reflectyio.ReflectyWriter;
@@ -65,6 +67,24 @@ public final class ArrayTypeAdapter extends AbstractTypeAdapter {
             list.add(ele);
         }
         source.endArray();
-        return list.toArray((Object[]) Array.newInstance(mComponentClass, list.size()));
+        if(!mComponentClass.isPrimitive()){
+            return list.toArray((Object[]) Array.newInstance(mComponentClass, list.size()));
+        }else {
+            switch (BaseMemberProxy.parseType(mComponentClass)){
+                //TODO
+                case MemberProxy.TYPE_BYTE:
+
+                case MemberProxy.TYPE_SHORT:
+                case MemberProxy.TYPE_INT:
+                case MemberProxy.TYPE_LONG:
+
+                case MemberProxy.TYPE_BOOLEAN:
+                case MemberProxy.TYPE_FLOAT:
+                case MemberProxy.TYPE_DOUBLE:
+                case MemberProxy.TYPE_CHAR:
+            }
+            //can't reach here
+            throw new UnsupportedOperationException();
+        }
     }
 }
