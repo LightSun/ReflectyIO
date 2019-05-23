@@ -62,6 +62,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
 ## 优缺点
 - 优势：
   - 统一的调用接口。 使用起来非常简单。只需要记住一个对象即可'ReflectyIo'.
+  - 支持针对method的序列化和反序列化。
   - 扩展性很强，并且支持以插件的形式扩展你所需要的数据格式。
     - 感兴趣的可以看 ReflectyDelegate, ReflectyContext, ReflectyPlugin等接口
   - 支持自定义数据关于版本号的兼容.  
