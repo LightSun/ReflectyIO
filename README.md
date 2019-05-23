@@ -76,7 +76,7 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
     //主库
     compile "com.heaven7.java.reflectyio:ReflectyIo:1.0.7"
     //可选依赖库。
-    compile "com.heaven7.java.xml:Xml:1.0.0"   //xml 数据格式支持
+    compile "com.heaven7.java.xml:Xml:1.0.1"   //xml 数据格式支持
     compile "com.heaven7.java.yaml:Yaml:1.0.1" //yaml 数据格式支持
     compile "com.heaven7.java.json:Json:1.0.0" //json 数据格式支持
 ```
