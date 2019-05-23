@@ -21,6 +21,22 @@ public class PluginTest {
     }
 
     @Test
+    public void testSimple(){
+        Info info = new Info();
+        info.setAddr("addr1");
+        info.setPhone("12345");
+
+        ReflectyIo io = new ReflectyIo().yaml()
+                .type(Info.class)
+                .build();
+        StringWriter writer = new StringWriter();
+        io.write2(writer, info);
+
+        Object obj = io.read2(new StringReader(writer.toString()));
+        Assert.assertEquals(info, obj);
+    }
+
+    @Test
     public void testObject() throws Exception{
         Person p = new Person();
         p.setAge(28);
@@ -77,52 +93,40 @@ public class PluginTest {
     }
 
     private void testXml(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
+        ReflectyIo reflectyIo = new ReflectyIo()
                 .xml()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .xml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+        //System.out.println(mWriter.toString());
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
     }
     private void testJson(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
+        ReflectyIo reflectyIo = new ReflectyIo()
                 .json()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .json()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+        //System.out.println(mWriter.toString());
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
     }
     private void testYaml(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
+        ReflectyIo reflectyIo = new ReflectyIo()
                 .yaml()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+        //System.out.println(mWriter.toString());
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
