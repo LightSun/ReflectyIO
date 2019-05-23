@@ -223,7 +223,7 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
         }
         if(xe != null){
             mElementName = xe.value();
-        }else { //
+        }else {
             mElementName = defineClass.getSimpleName();
         }
     }
@@ -247,9 +247,8 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
 
     @Override
     public void endWriteMemberProxy() {
-       // System.out.println("-------- current:  \n   " + impl.getBaseWriter());
         mProxyStack.pop().endElement();
-        System.out.println("-------- current:  \n   " + impl.getBaseWriter());
+       // System.out.println("-------- current:  \n   " + impl.getBaseWriter());
     }
 
     static class StackNode{

@@ -36,7 +36,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.xml'
     artifactId = 'Xml'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.1'
     desc = 'this is a xml lib which used to serialize, deserialize xml data.'
     website = 'https://github.com/LightSun/ReflectyIO'
 }
