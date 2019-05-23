@@ -81,21 +81,20 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
     compile "com.heaven7.java.json:Json:1.0.0" //json 数据格式支持
 ```
 - 2, 配置完成后即可快速开始。
-  - 写数据
+
   ```java
-  new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build()
-                .write(mWriter, obj);
-  ```
-  - 读数据
-  ```java
-   Object obj = new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+  Info info = new Info();
+        info.setAddr("addr1");
+        info.setPhone("12345");
+
+        ReflectyIo io = new ReflectyIo().yaml()
+                .type(Info.class)
+                .build();
+        StringWriter writer = new StringWriter();
+        io.write2(writer, info); //写数据
+
+        Object obj = io.read2(new StringReader(writer.toString())); //读数据
+        Assert.assertEquals(info, obj);
   ```
 ## 完整的demo
 - 1, 定义数据结构
