@@ -23,6 +23,7 @@ import com.heaven7.java.reflectyio.ReflectyWriter;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -38,7 +39,7 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
     private final ArrayTypeWriter mArrayWriter = new ArrayTypeWriter();
     private final ObjectTypeWriter mObjWriter  = new ObjectTypeWriter();
 
-    private final Stack<StackNode> parentTypeStack = new Stack<>();
+    private final LinkedList<StackNode> parentTypeStack = new LinkedList<>();
     private final XmlWriterImpl impl;
     private ParentTypeWriter pWriter;
     private String name;

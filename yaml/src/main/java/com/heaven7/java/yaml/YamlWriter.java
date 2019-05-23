@@ -22,7 +22,7 @@ import com.heaven7.java.reflectyio.ReflectyWriter;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Stack;
+import java.util.LinkedList;
 
 /**
  * the writer used to write 'yaml' data.
@@ -73,7 +73,7 @@ public class YamlWriter implements ReflectyWriter {
     private final HostWriterImpl mImpl = new HostWriterImpl();
     private final StringBuilder sb = new StringBuilder();
     private final int step = 2;
-    private final Stack<Byte> parentStack = new Stack<>();
+    private final LinkedList<Byte> parentStack = new LinkedList<>();
 
     private ParentTypeWriter writer;
     private ParentArrayWriter arrayWriter;
@@ -214,7 +214,7 @@ public class YamlWriter implements ReflectyWriter {
 
         int indentCount;
         String totalIndentSpace ="";
-        final Stack<StepNode> stepHistory = new Stack<>();
+        final LinkedList<StepNode> stepHistory = new LinkedList<>();
 
         public String indentSpace(String holdStr, boolean common){
             indentCount += holdStr.length();
