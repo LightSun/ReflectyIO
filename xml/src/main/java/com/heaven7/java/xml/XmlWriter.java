@@ -24,7 +24,6 @@ import com.heaven7.java.reflectyio.ReflectyWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.LinkedList;
-import java.util.Stack;
 
 /**
  * the xml writer
@@ -46,7 +45,7 @@ public final class XmlWriter implements ReflectyWriter, IXmlWriter, ObjectWriteM
 
     /** from {@linkplain XmlElement} */
     private String mElementName;
-    private final Stack<XmlMemberProxy> mProxyStack = new Stack<>();
+    private final LinkedList<XmlMemberProxy> mProxyStack = new LinkedList<>();
 
     public XmlWriter(Writer writer) {
         this.impl = new XmlWriterImpl(writer);
