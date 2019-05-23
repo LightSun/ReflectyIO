@@ -174,7 +174,7 @@ public class PluginTest {
     }
     private void testJson(TypeToken<?> tt, Object raw) throws IOException {
         ReflectyIo reflectyIo = new ReflectyIo()
-                .xml()
+                .json()
                 .typeToken(tt)
                 .build();
 
@@ -187,7 +187,7 @@ public class PluginTest {
     }
     private void testYaml(TypeToken<?> tt, Object raw) throws IOException {
         ReflectyIo reflectyIo = new ReflectyIo()
-                .xml()
+                .yaml()
                 .typeToken(tt)
                 .build();
 
