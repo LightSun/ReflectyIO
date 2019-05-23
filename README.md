@@ -160,52 +160,40 @@ public class PluginTest {
     }
 
     private void testXml(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
+        ReflectyIo reflectyIo = new ReflectyIo()
                 .xml()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .xml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+        
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
     }
     private void testJson(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
-                .json()
+        ReflectyIo reflectyIo = new ReflectyIo()
+                .xml()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .json()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+        
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
     }
     private void testYaml(TypeToken<?> tt, Object raw) throws IOException {
-        new ReflectyIo()
-                .yaml()
+        ReflectyIo reflectyIo = new ReflectyIo()
+                .xml()
                 .typeToken(tt)
-                .build()
-                .write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+                .build();
 
-        Object obj = new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build()
-                .read(new StringReader(mWriter.toString()));
+        reflectyIo.write(mWriter, raw);
+       
+        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
         Assert.assertEquals(obj, raw);
