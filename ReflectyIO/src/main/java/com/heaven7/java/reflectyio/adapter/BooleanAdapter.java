@@ -27,6 +27,7 @@ import java.io.IOException;
  * the char adapter used to read and write char data
  *
  * @author heaven7
+ * @since 1.1.0
  */
 public class BooleanAdapter extends AbstractBasicTypeAdapter {
 
