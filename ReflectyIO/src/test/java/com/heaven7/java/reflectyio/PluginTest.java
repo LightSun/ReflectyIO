@@ -1,61 +1,13 @@
 package com.heaven7.java.reflectyio;
 
-import com.google.gson.stream.JsonWriter;
 import com.heaven7.java.reflecty.TypeToken;
 import com.heaven7.java.reflectyio.entity.Info;
-import com.heaven7.java.reflectyio.entity.MediaEntity;
 import com.heaven7.java.reflectyio.entity.Person;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.*;
 
-public class PluginTest {
-
-    private final StringWriter mWriter = new StringWriter();
-
-    private void clean(){
-        StringBuffer buffer = mWriter.getBuffer();
-        buffer.delete(0, buffer.length());
-    }
-
-    @Test
-    public void testSimple(){
-        Info info = new Info();
-        info.setAddr("addr1");
-        info.setPhone("12345");
-
-        ReflectyIo io = new ReflectyIo()
-                .yaml()
-                .type(Info.class)
-                .build();
-        StringWriter writer = new StringWriter();
-        io.write2(writer, info);
-
-        System.out.println(writer.toString());
-        Object obj = io.read2(new StringReader(writer.toString()));
-        Assert.assertEquals(info, obj);
-    }
-
-    @Test
-    public void testMethod() throws IOException{
-      /*  MediaEntity me = new MediaEntity();
-        me.setTimes(new long[]{5, 199});
-
-        ReflectyIo io = new ReflectyIo()
-                .yaml()
-                .type(MediaEntity.class)
-                .build();
-        StringWriter writer = new StringWriter();
-        io.write2(writer, me);
-
-        System.out.println(writer.toString());
-        Object obj = io.read2(new StringReader(writer.toString()));
-        Assert.assertEquals(me, obj);*/
-    }
+public class PluginTest extends BaseTest{
 
     @Test
     public void testObject() throws Exception{
@@ -112,47 +64,6 @@ public class PluginTest {
         map.put("key2", Arrays.asList(createInfo(), createInfo(), createInfo()));
         return map;
     }
-
-    private void testXml(TypeToken<?> tt, Object raw) throws IOException {
-        ReflectyIo reflectyIo = new ReflectyIo()
-                .xml()
-                .typeToken(tt)
-                .build();
-
-        reflectyIo.write(mWriter, raw);
-        //System.out.println(mWriter.toString());
-        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
-        clean();
-
-        Assert.assertEquals(obj, raw);
-    }
-    private void testJson(TypeToken<?> tt, Object raw) throws IOException {
-        ReflectyIo reflectyIo = new ReflectyIo()
-                .json()
-                .typeToken(tt)
-                .build();
-
-        reflectyIo.write(mWriter, raw);
-        //System.out.println(mWriter.toString());
-        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
-        clean();
-
-        Assert.assertEquals(obj, raw);
-    }
-    private void testYaml(TypeToken<?> tt, Object raw) throws IOException {
-        ReflectyIo reflectyIo = new ReflectyIo()
-                .yaml()
-                .typeToken(tt)
-                .build();
-
-        reflectyIo.write(mWriter, raw);
-        //System.out.println(mWriter.toString());
-        Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
-        clean();
-
-        Assert.assertEquals(obj, raw);
-    }
-
     private Map<String, Info> createInfoMap() {
         Map<String, Info> map = new HashMap<>();
         map.put("info1", createInfo());

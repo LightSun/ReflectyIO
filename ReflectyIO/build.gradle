@@ -29,8 +29,9 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     compile "com.heaven7.java.reflecty:Reflecty:1.0.2"
+    compile 'com.heaven7.java.base:Java-base:1.2.0'
 
-    testCompile "com.heaven7.java.xml:Xml:1.0.0"
+    testCompile "com.heaven7.java.xml:Xml:1.0.1"
     testCompile "com.heaven7.java.yaml:Yaml:1.0.1"
     testCompile "com.heaven7.java.json:Json:1.0.0"
 }
@@ -39,7 +40,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.reflectyio'
     artifactId = 'ReflectyIo'
-    publishVersion = '1.0.8'
+    publishVersion = '1.1.0'
     desc = 'this is a common framework which user reflect lib, to serialize, deserialize data. you can wrap yaml, json, xml or etc.'
     website = 'https://github.com/LightSun/ReflectyIO'
 }

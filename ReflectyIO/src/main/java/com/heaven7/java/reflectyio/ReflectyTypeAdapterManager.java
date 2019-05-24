@@ -68,11 +68,15 @@ public class ReflectyTypeAdapterManager extends AbstractTypeAdapterManager<Refle
         registerAdapters(long.class, Long.class);
         registerAdapters(float.class, Float.class);
         registerAdapters(double.class, Double.class);
-        registerAdapters(boolean.class, Boolean.class);
+       // registerAdapters(boolean.class, Boolean.class);
 
         CharAdapter ca = new CharAdapter(mEvaluator);
         registerBasicTypeAdapter(char.class, ca);
         registerBasicTypeAdapter(Character.class, ca);
+
+        BooleanAdapter ba = new BooleanAdapter(mEvaluator);
+        registerBasicTypeAdapter(boolean.class, ba);
+        registerBasicTypeAdapter(Boolean.class, ba);
 
         registerBasicTypeAdapter(String.class, new StringAdapter(mEvaluator));
     }

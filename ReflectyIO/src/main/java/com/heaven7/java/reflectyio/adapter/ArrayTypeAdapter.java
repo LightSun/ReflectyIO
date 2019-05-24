@@ -16,7 +16,6 @@
  */
 package com.heaven7.java.reflectyio.adapter;
 
-
 import com.heaven7.java.reflecty.MemberProxy;
 import com.heaven7.java.reflecty.iota.TypeAdapter;
 import com.heaven7.java.reflecty.member.BaseMemberProxy;
@@ -28,6 +27,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.heaven7.java.base.util.ArrayUtils.*;
 
 /**
  * the array type adapter.
@@ -58,7 +59,7 @@ public final class ArrayTypeAdapter extends AbstractTypeAdapter {
         return 0;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public Object read(ReflectyReader source) throws IOException {
         List list = new ArrayList();
         source.beginArray();
@@ -70,18 +71,26 @@ public final class ArrayTypeAdapter extends AbstractTypeAdapter {
         if(!mComponentClass.isPrimitive()){
             return list.toArray((Object[]) Array.newInstance(mComponentClass, list.size()));
         }else {
+            //primitive array
             switch (BaseMemberProxy.parseType(mComponentClass)){
-                //TODO
-                case MemberProxy.TYPE_BYTE:
 
+                case MemberProxy.TYPE_BYTE:
+                    return toByteArray(list);
                 case MemberProxy.TYPE_SHORT:
+                    return toShortArray(list);
                 case MemberProxy.TYPE_INT:
+                    return toIntArray(list);
                 case MemberProxy.TYPE_LONG:
+                    return toLongArray(list);
 
                 case MemberProxy.TYPE_BOOLEAN:
+                    return toBooleanArray(list);
                 case MemberProxy.TYPE_FLOAT:
+                    return toFloatArray(list);
                 case MemberProxy.TYPE_DOUBLE:
+                    return toDoubleArray(list);
                 case MemberProxy.TYPE_CHAR:
+                    return toCharArray(list);
             }
             //can't reach here
             throw new UnsupportedOperationException();
