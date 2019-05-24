@@ -47,14 +47,15 @@ public interface ReflectyReader {
      */
     String nextString() throws IOException;
 
-
     /**
      * called on request next value as boolean
      * @return the value
      * @throws IOException if an I/O error occurs.
      * @since 1.1.0
      */
-    boolean nextBoolean() throws IOException;
+    default boolean nextBoolean() throws IOException{
+        return Boolean.valueOf(nextString());
+    }
 
     /**
      * called on request next name
