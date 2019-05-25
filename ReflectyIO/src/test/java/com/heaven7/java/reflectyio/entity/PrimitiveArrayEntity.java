@@ -45,7 +45,7 @@ public class PrimitiveArrayEntity {
         entity.arg7[2] = true;
 
         entity.arg8[0] = 97;
-        entity.arg8[1] = 98;
+        entity.arg8[1] = 'h';
         entity.arg8[2] = 99;
         return entity;
     }
