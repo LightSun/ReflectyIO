@@ -1,9 +1,10 @@
 # ReflectyIO
 这是一个序列化和反序列化数据的一个框架。支持任意数据格式的扩展(以插件的形式)。
+[![](https://jitpack.io/v/LightSun/ReflectyIo.svg)](https://jitpack.io/#LightSun/ReflectyIo)
 
 ## 特征
 - 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
-- 支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
+- 支持任意java数据类型。比如8大基本类型(含包装类型)，string, collection集合系列。map集合系列。任意自定义对象系列。 
 甚至不实现collection的collection，以及不实现map接口的map. 
 - 支持针对method的序列化, 类似于field但是略微不同的是。 关于method的序列化必须是成对(like get with set)的出现。
 - 标准化调用接口。使用非常简单。
@@ -73,14 +74,20 @@ ReflectyPluginManager.getDefault().registerReflectyPlugin(int type, ReflectyPlug
   - 内置xml支持的数据类型，其中泛型不能嵌套太深。而且最外层对象一定是自定义对象(不能是集合类型)。
   
 ## 使用步骤
-- gradle配置(其中版本号可根据release版本修改).android平台将compile改为implementation即可。
+- gradle配置(其中版本号可根据release版本修改).
 ```java
+    allprojects {
+		   repositories {
+		    	...
+		    	maven { url 'https://jitpack.io' }
+		   }
+	  }
     //主库
-    compile "com.heaven7.java.reflectyio:ReflectyIo:1.0.7"
+    implementation "com.github.LightSun:ReflectyIo:1.1.0"
     //可选依赖库。
-    compile "com.heaven7.java.xml:Xml:1.0.1"   //xml 数据格式支持
-    compile "com.heaven7.java.yaml:Yaml:1.0.1" //yaml 数据格式支持
-    compile "com.heaven7.java.json:Json:1.0.0" //json 数据格式支持
+    implementation "com.github.LightSun:Xml:1.0.2"   //xml 数据格式支持
+    implementation "com.github.LightSun:Yaml:1.0.2" //yaml 数据格式支持
+    implementation "com.github.LightSun:Json:1.0.1" //json 数据格式支持
 ```
 - 配置完成后即可快速开始。 
 
