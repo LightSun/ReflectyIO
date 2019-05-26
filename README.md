@@ -1,5 +1,6 @@
 # ReflectyIO
 这是一个序列化和反序列化数据的一个框架。支持任意数据格式的扩展(以插件的形式)。
+[![](https://jitpack.io/v/LightSun/ReflectyIo.svg)](https://jitpack.io/#LightSun/ReflectyIo)
 
 ## 特征
 - 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
