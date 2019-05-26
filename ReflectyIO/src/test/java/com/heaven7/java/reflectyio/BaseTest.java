@@ -2,8 +2,6 @@ package com.heaven7.java.reflectyio;
 
 import com.heaven7.java.reflecty.TypeToken;
 import com.heaven7.java.reflectyio.entity.*;
-import com.heaven7.java.reflectyio.json.JsonReflectyPlugin;
-import com.heaven7.java.reflectyio.plugin.ReflectyPluginManager;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,18 +13,14 @@ public class BaseTest {
 
     final StringWriter mWriter = new StringWriter();
 
-    static {
-        ReflectyPluginManager.getDefault().registerReflectyPlugin(ReflectyIo.PLUGIN_TYPE_JSON, new JsonReflectyPlugin());
-    }
-
     @Test
     public void testPrimitive()  throws IOException{
         PrimitiveEntity entity = PrimitiveEntity.create();
         TypeToken<PrimitiveEntity> token = TypeToken.get(PrimitiveEntity.class);
 
         testJson(token, entity);
-      /*  testXml(token, entity);
-        testYaml(token, entity);*/
+        testXml(token, entity);
+        testYaml(token, entity);
     }
 
     @Test
@@ -35,8 +29,8 @@ public class BaseTest {
         TypeToken<PrimitiveArrayEntity> token = TypeToken.get(PrimitiveArrayEntity.class);
 
         testJson(token, entity);
-      /*  testXml(token, entity);
-        testYaml(token, entity);*/
+        testXml(token, entity);
+        testYaml(token, entity);
     }
     @Test
     public void testPrimitiveWrapper()  throws IOException{
@@ -44,8 +38,8 @@ public class BaseTest {
         TypeToken<PrimitiveWrapper> token = TypeToken.get(PrimitiveWrapper.class);
 
         testJson(token, entity);
-      /*  testXml(token, entity);
-        testYaml(token, entity);*/
+        testXml(token, entity);
+        testYaml(token, entity);
     }
 
     @Test
@@ -97,7 +91,7 @@ public class BaseTest {
                 .build();
 
         reflectyIo.write(mWriter, raw);
-        //System.out.println(mWriter.toString());
+        System.out.println(mWriter.toString());
         Object obj = reflectyIo.read(new StringReader(mWriter.toString()));
         clean();
 
