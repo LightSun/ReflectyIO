@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Reflectyio.iml" filepath="$PROJECT_DIR$/.idea/modules/Reflectyio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Reflectyio_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Reflectyio_main.iml" group="Reflectyio" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Reflectyio_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Reflectyio_test.iml" group="Reflectyio" />
+    </modules>
+  </component>
+</project>
