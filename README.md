@@ -4,7 +4,7 @@
 
 ## 特征
 - 支持对象序列化为任意格式数据。同样支持反序列化数据为对象。
-- 支持任意java数据类型。比如8大基本类型，string, collection集合系列。map集合系列。任意自定义对象系列。 
+- 支持任意java数据类型。比如8大基本类型(含包装类型)，string, collection集合系列。map集合系列。任意自定义对象系列。 
 甚至不实现collection的collection，以及不实现map接口的map. 
 - 支持针对method的序列化, 类似于field但是略微不同的是。 关于method的序列化必须是成对(like get with set)的出现。
 - 标准化调用接口。使用非常简单。
